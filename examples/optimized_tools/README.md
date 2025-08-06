@@ -1,6 +1,6 @@
-# FastMCP SSH工具优化示例
+# FastMCP SSH工具最佳实践示例
 
-这个目录展示了如何使用FastMCP最佳实践重写SSH MCP工具。
+这个目录展示了如何使用FastMCP最佳实践实现SSH MCP工具。
 
 ## 文件说明
 
@@ -8,25 +8,19 @@
 - `server_optimized.py` - 优化的服务器实现
 - `README.md` - 本说明文件
 
-## 主要改进
+## 主要特性
 
 ### 1. 直接装饰器模式
 ```python
-# ✅ 新方式：直接装饰器
+# ✅ 使用直接装饰器模式
 @mcp.tool(name="execute-command", ...)
 async def execute_command(...):
     pass
-
-# ❌ 旧方式：包装函数
-def register_execute_command_tool(mcp, ssh_manager):
-    @mcp.tool("execute-command")
-    async def execute_command(...):
-        pass
 ```
 
 ### 2. Context依赖注入
 ```python
-# ✅ 新方式：Context依赖注入
+# ✅ 使用Context依赖注入
 async def execute_command(cmdString: str, ctx: Context = None):
     if ctx:
         await ctx.info(f"Executing: {cmdString}")

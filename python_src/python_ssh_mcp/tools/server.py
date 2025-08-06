@@ -116,10 +116,10 @@ class OptimizedSSHMCPServer:
             raise RuntimeError("Server must be initialized before running")
 
         try:
-            version_info = (
-                "v2 (optimized)" if self._use_v2_tools else "v1 (compatibility)"
-            )
-            self.logger.info(f"Starting FastMCP server with {version_info} tools")
+            # version_info = (
+            #     "v2 (optimized)" if self._use_v2_tools else "v1 (compatibility)"
+            # )
+            # self.logger.info(f"Starting FastMCP server with {version_info} tools")
 
             # Start the FastMCP server using async method
             await self.mcp.run_async(**kwargs)

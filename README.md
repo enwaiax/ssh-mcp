@@ -365,14 +365,14 @@ fastmcp-ssh-server/
 ## 📚 Documentation
 
 - **[API Documentation](docs/api.md)** - Detailed MCP tools API reference
-- **[Migration Guide](docs/migration.md)** - Migrating from TypeScript version
+- **[Migration Guide](docs/MIGRATION_TO_V2.md)** - Migrating from TypeScript version
 - **[Examples](examples/)** - Usage examples and configurations
 - **[Test Documentation](tests/README.md)** - Testing guide and coverage
 - **[Troubleshooting](docs/troubleshooting.md)** - Common issues and solutions
 
 ## 🔄 Migration from TypeScript Version
 
-This Python implementation is designed to be fully compatible with the TypeScript version. See our [Migration Guide](docs/migration.md) for detailed instructions on switching from the TypeScript implementation.
+This Python implementation is designed to be fully compatible with the TypeScript version. See our [Migration Guide](docs/MIGRATION_TO_V2.md) for detailed instructions on switching from the TypeScript implementation.
 
 ### Key Differences
 

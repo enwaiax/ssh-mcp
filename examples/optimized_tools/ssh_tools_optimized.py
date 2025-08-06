@@ -298,7 +298,13 @@ async def initialize_server(ssh_configs):
     Args:
         ssh_configs: SSH连接配置字典
     """
-    from python_src.python_ssh_mcp.ssh_manager import SSHConnectionManager
+    import sys
+    from pathlib import Path
+
+    # Add python_src to path for imports
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent / "python_src"))
+
+    from python_ssh_mcp.ssh_manager import SSHConnectionManager
 
     # 初始化SSH管理器
     ssh_manager = await SSHConnectionManager.get_instance()

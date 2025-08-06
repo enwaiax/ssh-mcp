@@ -5,10 +5,15 @@
 """
 
 import asyncio
+import sys
+from pathlib import Path
 
 from ssh_tools_optimized import initialize_server
 
-from python_src.python_ssh_mcp.models import SSHConfig
+# Add python_src to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "python_src"))
+
+from python_ssh_mcp.models import SSHConfig
 
 
 async def main():
