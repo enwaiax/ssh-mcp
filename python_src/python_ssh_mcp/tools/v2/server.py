@@ -17,8 +17,6 @@ Author: AI Assistant
 Version: 2.0.0
 """
 
-import os
-
 from fastmcp import FastMCP
 
 from ...models import SshConnectionConfigMap
@@ -44,31 +42,21 @@ class OptimizedSSHMCPServer:
     - Graceful shutdown and resource cleanup
     """
 
-    def __init__(self, name: str = "ssh-mcp-server-v2", use_v2_tools: bool = True):
+    def __init__(self, name: str = "ssh-mcp-server-v2"):
         """
         Initialize the optimized SSH MCP server.
 
         Args:
             name: Server name for MCP identification
-            use_v2_tools: Whether to use v2 tools (can be overridden by environment)
         """
-        # Check environment variable for version control
-        env_version = os.getenv("SSH_MCP_TOOLS_VERSION", "v2" if use_v2_tools else "v1")
-        self._use_v2_tools = env_version.lower() in ("v2", "2", "true", "yes")
-
         # Initialize logger
         self.logger = Logger()
 
-        if self._use_v2_tools:
-            # Use pre-configured v2 MCP instance with registered tools
-            self.mcp = v2_mcp
-            self.logger.info(
-                f"Initialized optimized server with v2 tools (using '{self.mcp.name}')"
-            )
-        else:
-            # Fallback to v1 style for compatibility
-            self.mcp = FastMCP(name)
-            self.logger.info(f"Initialized server '{name}' with v1 compatibility mode")
+        # Use pre-configured v2 MCP instance with registered tools
+        self.mcp = v2_mcp
+        self.logger.info(
+            f"Initialized optimized server with v2 tools (using '{self.mcp.name}')"
+        )
 
         self._ssh_manager: SSHConnectionManager | None = None
         self._is_initialized = False
@@ -88,10 +76,8 @@ class OptimizedSSHMCPServer:
                 f"Initializing server with {len(ssh_configs)} SSH configurations"
             )
 
-            if self._use_v2_tools:
-                await self._initialize_v2(ssh_configs)
-            else:
-                await self._initialize_v1_compatibility(ssh_configs)
+            # Initialize with v2 tools (unified implementation)
+            await self._initialize_v2(ssh_configs)
 
             self._is_initialized = True
             self.logger.info("Server initialization completed successfully")
@@ -115,38 +101,6 @@ class OptimizedSSHMCPServer:
         set_ssh_manager(self._ssh_manager)
 
         self.logger.info("v2 tools automatically registered via decorators")
-
-    async def _initialize_v1_compatibility(
-        self, ssh_configs: SshConnectionConfigMap
-    ) -> None:
-        """Initialize server with v1 compatibility mode."""
-        # Initialize SSH manager
-        self._ssh_manager = await SSHConnectionManager.get_instance()
-        self._ssh_manager.set_config(ssh_configs)
-
-        # Connect to all SSH servers
-        await self._ssh_manager.connect_all()
-
-        # Register v1 tools manually
-        self._register_v1_tools()
-
-        self.logger.info("v1 compatibility tools registered manually")
-
-    def _register_v1_tools(self) -> None:
-        """Register v1 style tools for backward compatibility."""
-        # Import v1 tool registration functions
-        from ...tools import (
-            register_download_tool,
-            register_execute_command_tool,
-            register_list_servers_tool,
-            register_upload_tool,
-        )
-
-        # Register tools with the MCP server
-        register_execute_command_tool(self.mcp, self._ssh_manager)
-        register_upload_tool(self.mcp, self._ssh_manager)
-        register_download_tool(self.mcp, self._ssh_manager)
-        register_list_servers_tool(self.mcp, self._ssh_manager)
 
     async def run(self, **kwargs) -> None:
         """

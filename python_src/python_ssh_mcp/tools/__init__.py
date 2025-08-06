@@ -1,35 +1,34 @@
 # {{RIPER-5:
 #   Action: "Modified"
-#   Task_ID: "c43987f7-0900-49b3-b9ca-37ca452955d9"
-#   Timestamp: "2025-08-05T20:00:30+08:00"
+#   Task_ID: "71577b93-1fcd-4cf4-95d9-c78745b3b9bb"
+#   Timestamp: "2025-08-06T22:40:08+08:00"
 #   Authoring_Role: "LD"
-#   Principle_Applied: "SOLID-S (单一职责原则) + FastMCP工具注册"
-#   Quality_Check: "完整导入所有MCP工具注册函数，提供统一接口"
+#   Principle_Applied: "SOLID-S (单一职责原则) + v2架构统一"
+#   Quality_Check: "移除v1导入，指向v2实现，简化架构"
 # }}
 # {{START_MODIFICATIONS}}
 """
-MCP Tools Module
+SSH MCP Tools Module
 
-This module contains the implementation of all MCP tools for SSH operations.
-Each tool is implemented as a separate module following the FastMCP patterns.
+This module provides the unified v2 implementation of SSH MCP tools using
+FastMCP best practices including:
+- Direct decorator pattern with automatic registration
+- Context dependency injection for logging and progress reporting
+- Rich tool metadata with annotations, tags, and meta information
+- Enhanced error handling and structured logging
 
 Available tools:
-- execute_command: Execute SSH commands on remote servers
-- upload: Upload files to remote servers via SFTP
-- download: Download files from remote servers via SFTP
-- list_servers: List all configured SSH server connections
+- execute-command: Execute SSH commands with progress reporting
+- upload: Upload files via SFTP with structured logging
+- download: Download files via SFTP with progress tracking
+- list-servers: List SSH server configurations with status
+
+The v2 implementation is now the unified standard, providing enhanced
+features while maintaining 100% API compatibility.
 """
 
-# Import all tool registration functions
-from .download import register_download_tool
-from .execute_command import register_execute_command_tool
-from .list_servers import register_list_servers_tool
-from .upload import register_upload_tool
+# Import v2 tools implementation
+from .v2 import initialize_server, mcp
 
-__all__ = [
-    "register_execute_command_tool",
-    "register_upload_tool",
-    "register_download_tool",
-    "register_list_servers_tool",
-]
+__all__ = ["mcp", "initialize_server"]
 # {{END_MODIFICATIONS}}
