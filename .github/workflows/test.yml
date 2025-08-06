@@ -13,35 +13,35 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ["3.12"]
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    
+
     - name: Install uv
       uses: astral-sh/setup-uv@v3
-      
+
     - name: Install dependencies
       run: |
         uv sync --all-extras --dev
-        
+
     - name: Run linting
       run: |
         uv run ruff check python_src/
         uv run ruff format --check python_src/
-        
+
     - name: Run type checking
       run: |
         uv run mypy python_src/ || echo "Type checking failed, but continuing..."
-        
+
     - name: Run tests
       run: |
         uv run pytest tests/ -v --cov=python_src --cov-report=xml --cov-report=html
-        
+
     - name: Upload coverage to Codecov
       if: matrix.os == 'ubuntu-latest'
       uses: codecov/codecov-action@v3
@@ -53,29 +53,29 @@ jobs:
   integration-test:
     runs-on: ubuntu-latest
     needs: test
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: "3.12"
-    
+
     - name: Install uv
       uses: astral-sh/setup-uv@v3
-      
+
     - name: Install package
       run: |
         uv sync --dev
         uv build
         uv pip install dist/*.whl
-        
+
     - name: Test CLI
       run: |
         fastmcp-ssh-server --help
         fastmcp-ssh-server --version || true  # Allow to fail gracefully if --version not implemented
-        
+
     - name: Run performance benchmarks
       run: |
         uv run python tests/performance_benchmark.py

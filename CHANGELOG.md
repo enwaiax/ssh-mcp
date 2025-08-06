@@ -14,13 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Complete FastMCP Python Implementation**: Full rewrite from TypeScript to Python
-- **Dual Tool Architecture**: 
+- **Dual Tool Architecture**:
   - v1 tools: Stable implementation with function-based registration
   - v2 tools: Enhanced implementation with decorator-based registration
 - **Core SSH MCP Tools**:
   - `execute-command`: Remote SSH command execution with enhanced monitoring
   - `upload`: SFTP file upload with progress tracking
-  - `download`: SFTP file download with progress tracking  
+  - `download`: SFTP file download with progress tracking
   - `list-servers`: SSH connection management and status reporting
 - **Enhanced Features**:
   - Context dependency injection for v2 tools

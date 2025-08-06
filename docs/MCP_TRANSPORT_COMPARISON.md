@@ -226,13 +226,13 @@ uv run fastmcp-ssh-server --transport http --host 0.0.0.0 --port 8000 ...
    python -c "
    import asyncio
    from fastmcp import Client
-   
+
    async def test():
        client = Client('./your-server-script.py')
        async with client:
            await client.ping()
            print('MCP服务器正常工作！')
-   
+
    asyncio.run(test())
    "
    ```

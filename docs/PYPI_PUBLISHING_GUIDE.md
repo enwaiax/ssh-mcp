@@ -21,7 +21,7 @@ Complete guide for publishing SSH MCP Tools to PyPI using GitHub Actions and tru
 #### For Production PyPI:
 1. Go to [PyPI](https://pypi.org) and log in
 2. Navigate to "Your projects" → "Manage" (or create new project)
-3. Go to "Settings" → "Publishing" 
+3. Go to "Settings" → "Publishing"
 4. Click "Add a new publisher"
 5. Fill in the details:
    - **Repository name**: `enwaiax/ssh-mcp`
@@ -41,11 +41,11 @@ Complete guide for publishing SSH MCP Tools to PyPI using GitHub Actions and tru
 
 #### Environment: `pypi`
 - **Name**: `pypi`
-- **Protection rules**: 
+- **Protection rules**:
   - ✅ Required reviewers (optional, for extra safety)
   - ✅ Wait timer (optional, for staged releases)
 
-#### Environment: `testpypi`  
+#### Environment: `testpypi`
 - **Name**: `testpypi`
 - **Protection rules**: None required for testing
 
@@ -84,7 +84,7 @@ git push origin v1.0.0
 
 This triggers the automated workflow that will:
 1. ✅ Run comprehensive tests
-2. ✅ Build the package  
+2. ✅ Build the package
 3. ✅ Publish to TestPyPI
 4. ✅ Publish to PyPI (production)
 
@@ -162,7 +162,7 @@ fastmcp-ssh-server --help
 ```
 Error: The user 'username' isn't allowed to upload to project 'fastmcp-ssh-server'
 ```
-**Solution**: 
+**Solution**:
 - Verify trusted publishing is configured correctly on PyPI
 - Check that repository name, workflow file, and environment name match exactly
 - Ensure the GitHub environment exists and has proper permissions

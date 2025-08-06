@@ -244,7 +244,7 @@ async def main():
         command_whitelist=["ls", "pwd", "echo.*"],
         command_blacklist=["rm.*", "sudo.*"]
     )
-    
+
     # Your example logic here
     print("✅ Example completed successfully")
 

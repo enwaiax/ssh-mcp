@@ -16,7 +16,7 @@ services:
       dockerfile: examples/deployment/Dockerfile
     container_name: fastmcp-ssh-server
     restart: unless-stopped
-    
+
     # Environment configuration
     environment:
       # SSH Connection Settings
@@ -26,23 +26,23 @@ services:
       SSH_PASSWORD: ${SSH_PASSWORD:-}
       SSH_PRIVATE_KEY: /app/keys/id_rsa
       SSH_PASSPHRASE: ${SSH_PASSPHRASE:-}
-      
+
       # Security Settings
       WHITELIST: ${WHITELIST:-ls,pwd,echo.*,uptime,whoami,git status}
       BLACKLIST: ${BLACKLIST:-rm.*,sudo.*,chmod.*,dd.*}
-      
+
       # Logging
       LOG_LEVEL: ${LOG_LEVEL:-info}
-    
+
     # Volume mounts
     volumes:
       # SSH keys directory
       - ssh-keys:/app/keys
-      # Logs directory  
+      # Logs directory
       - ssh-logs:/app/logs
       # Optional: Mount your SSH key directly
       # - ~/.ssh/id_rsa:/app/keys/id_rsa:ro
-    
+
     # Resource limits
     deploy:
       resources:
@@ -52,7 +52,7 @@ services:
         reservations:
           cpus: '0.1'
           memory: 64M
-    
+
     # Health check
     healthcheck:
       test: ["CMD", "python", "-c", "import sys; sys.path.insert(0, '/app/python_src'); from python_ssh_mcp.utils import Logger; Logger.info('Health check')"]
@@ -60,14 +60,14 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
-    
+
     # Security settings
     security_opt:
       - no-new-privileges:true
-    
+
     # User settings
     user: "1000:1000"  # Adjust to your user ID
-    
+
     # No ports exposed (MCP over stdin/stdout)
     # ports:
     #   - "8080:8080"  # If you add HTTP API later

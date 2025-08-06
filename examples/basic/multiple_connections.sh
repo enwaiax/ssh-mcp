@@ -10,7 +10,7 @@
 # {{START_MODIFICATIONS}}
 
 # FastMCP SSH Server - Multiple Connections Example
-# 
+#
 # This example demonstrates how to connect to multiple SSH servers
 # simultaneously using SSH connection string format.
 #
@@ -29,7 +29,7 @@ SERVER3=${SSH_SERVER3:-"server3.example.com"}  # No user specified
 
 echo "📋 Server Configurations:"
 echo "   Server 1: $SERVER1"
-echo "   Server 2: $SERVER2" 
+echo "   Server 2: $SERVER2"
 echo "   Server 3: $SERVER3"
 
 # Global security configuration (applies to all servers)

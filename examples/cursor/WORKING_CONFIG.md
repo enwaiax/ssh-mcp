@@ -30,14 +30,14 @@ This configuration has been **tested and confirmed working** in production:
 ```bash
 "--directory", "/path/to/your/project"
 ```
-❌ **Don't use:** `"cwd": "/path/to/project"`  
+❌ **Don't use:** `"cwd": "/path/to/project"`
 ✅ **Use:** `--directory` in the args array
 
 ### 2. **Explicit Port Specification**
 ```bash
 "--port", "22"
 ```
-❌ **Don't skip** the port parameter  
+❌ **Don't skip** the port parameter
 ✅ **Always specify** `--port` explicitly
 
 ### 3. **Correct Argument Order**

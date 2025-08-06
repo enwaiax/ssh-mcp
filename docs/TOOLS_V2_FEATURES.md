@@ -55,16 +55,16 @@ async def execute_command(
 ) -> str:
     """Execute SSH commands with enhanced monitoring and Context integration."""
     ssh_manager = get_ssh_manager()
-    
+
     if ctx:
         ctx.logger.info("Executing SSH command", {"command": cmdString, "connection": connectionName})
-    
+
     try:
         result = await ssh_manager.execute_command(cmdString, connectionName)
-        
+
         if ctx:
             ctx.logger.info("Command execution completed", {"output_length": len(result)})
-        
+
         return result.strip() if result else ""
     except Exception as error:
         if ctx:
@@ -93,16 +93,16 @@ async def my_tool(param: str, ctx: Context | None = None) -> str:
     if ctx:
         # Access logging
         ctx.logger.info("Tool started")
-        
+
         # Report progress
         ctx.progress.update(25, "Processing...")
-        
+
         # Access server state
         server_info = ctx.server.get_info()
-        
+
         # Set custom metadata
         ctx.set_metadata("operation_id", "12345")
-    
+
     return "Result"
 ```
 
@@ -115,7 +115,7 @@ if ctx:
     ctx.logger.info("Operation started")
     ctx.logger.warning("Potential issue detected")
     ctx.logger.error("Error occurred")
-    
+
     # Structured logging with context
     ctx.logger.info("SSH connection established", {
         "host": connection.host,
@@ -129,12 +129,12 @@ if ctx:
 if ctx:
     # Start operation
     ctx.progress.start("Uploading file...")
-    
+
     # Update progress
     for i in range(100):
         ctx.progress.update(i, f"Uploading... {i}%")
         await asyncio.sleep(0.1)
-    
+
     # Complete operation
     ctx.progress.complete("Upload finished")
 ```
@@ -145,7 +145,7 @@ if ctx:
     # Get server information
     info = ctx.server.get_info()
     print(f"Server: {info.name}, Version: {info.version}")
-    
+
     # Access configuration
     config = ctx.server.get_config()
 ```
@@ -170,7 +170,7 @@ async def execute_command(
     ctx: Context | None = None,
 ) -> str:
     ssh_manager = get_ssh_manager()
-    
+
     # Log operation start
     if ctx:
         ctx.logger.info("Starting SSH command execution", {
@@ -178,14 +178,14 @@ async def execute_command(
             "connection": connectionName or "default",
             "command_length": len(cmdString)
         })
-    
+
     try:
         # Report progress
         if ctx:
             ctx.progress.start("Executing command...")
-        
+
         result = await ssh_manager.execute_command(cmdString, connectionName)
-        
+
         # Report completion
         if ctx:
             ctx.progress.complete(f"Command completed ({len(result)} chars output)")
@@ -193,9 +193,9 @@ async def execute_command(
                 "output_length": len(result),
                 "exit_status": "success"
             })
-        
+
         return result.strip() if result else ""
-        
+
     except Exception as error:
         if ctx:
             ctx.logger.error("Command execution failed", {
@@ -203,7 +203,7 @@ async def execute_command(
                 "error_type": type(error).__name__
             })
             ctx.progress.error(f"Failed: {str(error)}")
-        
+
         return f"Error: {str(error)}"
 ```
 
@@ -223,8 +223,8 @@ ctx.logger.info("File upload started", {
 })
 
 # Output:
-# 2025-08-06 12:00:00.123 | INFO | ssh_tools | File upload started | 
-# local_path=/path/to/file.txt remote_path=/remote/path/file.txt 
+# 2025-08-06 12:00:00.123 | INFO | ssh_tools | File upload started |
+# local_path=/path/to/file.txt remote_path=/remote/path/file.txt
 # file_size=1024 connection=production-server
 ```
 
@@ -315,7 +315,7 @@ def _register_tools(self) -> None:
         register_list_servers_tool,
         register_upload_tool,
     )
-    
+
     register_execute_command_tool(self.mcp, self._ssh_manager)
     register_upload_tool(self.mcp, self._ssh_manager)
     register_download_tool(self.mcp, self._ssh_manager)
@@ -358,28 +358,28 @@ async def upload(
 ) -> str:
     if ctx:
         ctx.progress.start("Preparing file upload...")
-    
+
     try:
         # Get file info
         file_size = os.path.getsize(localPath)
-        
+
         if ctx:
             ctx.progress.update(10, f"Uploading {os.path.basename(localPath)} ({file_size} bytes)")
-        
+
         # Simulate upload progress
         for percent in range(20, 100, 10):
             if ctx:
                 ctx.progress.update(percent, f"Uploading... {percent}%")
             await asyncio.sleep(0.1)  # Simulate work
-        
+
         # Complete upload
         result = await ssh_manager.upload_file(localPath, remotePath, connectionName)
-        
+
         if ctx:
             ctx.progress.complete("Upload completed successfully")
-        
+
         return result
-        
+
     except Exception as error:
         if ctx:
             ctx.progress.error(f"Upload failed: {str(error)}")
@@ -389,7 +389,7 @@ async def upload(
 ### Progress States
 
 - **start(message)**: Begin operation with initial message
-- **update(percent, message)**: Update progress with percentage and message  
+- **update(percent, message)**: Update progress with percentage and message
 - **complete(message)**: Mark operation as completed
 - **error(message)**: Mark operation as failed
 - **warning(message)**: Add warning without changing state
@@ -414,7 +414,7 @@ except SSHConnectionError as error:
 except SSHAuthenticationError as error:
     if ctx:
         ctx.logger.error("SSH authentication failed", {
-            "error_type": "SSHAuthenticationError", 
+            "error_type": "SSHAuthenticationError",
             "username": error.username,
             "auth_method": error.auth_method
         })
@@ -443,10 +443,10 @@ async def execute_command_with_retry(
         try:
             if ctx and attempt > 0:
                 ctx.logger.warning(f"Retry attempt {attempt}/{max_retries}")
-            
+
             result = await ssh_manager.execute_command(cmdString, connectionName)
             return result
-            
+
         except SSHConnectionError as error:
             if attempt < max_retries - 1:
                 if ctx:
@@ -469,7 +469,7 @@ async def execute_command_with_retry(
 @mcp.tool("execute-command")
 async def execute_command(
     cmdString: str,                    # Required string parameter
-    connectionName: str | None = None, # Optional string parameter  
+    connectionName: str | None = None, # Optional string parameter
     ctx: Context | None = None,        # Optional Context injection
 ) -> str:                              # Return type annotation
     # Implementation with full IDE support
@@ -515,13 +515,13 @@ async def test_execute_command():
     mock_ctx = Mock()
     mock_logger = Mock()
     mock_progress = Mock()
-    
+
     mock_ctx.logger = mock_logger
     mock_ctx.progress = mock_progress
-    
+
     # Test tool with mocked Context
     result = await execute_command("ls -la", None, mock_ctx)
-    
+
     # Verify Context usage
     mock_logger.info.assert_called()
     mock_progress.start.assert_called()
@@ -531,7 +531,7 @@ async def test_execute_command():
 
 ### Efficient Resource Usage
 
-**Connection Pooling**: 
+**Connection Pooling**:
 ```python
 # v2 uses optimized connection management
 ssh_manager = get_ssh_manager()  # Singleton pattern
@@ -621,11 +621,11 @@ async def parallel_commands():
 # Always check for Context availability
 if ctx:
     ctx.logger.info("Operation started")
-    
+
 # Provide meaningful progress updates
 if ctx:
     ctx.progress.update(50, "Processing file...")
-    
+
 # Use structured logging
 if ctx:
     ctx.logger.info("File processed", {
@@ -680,6 +680,6 @@ v2 provides a foundation for future enhancements:
 
 ---
 
-*Features Guide Version: 1.0.0*  
-*Last Updated: August 2025*  
+*Features Guide Version: 1.0.0*
+*Last Updated: August 2025*
 *SSH MCP Tools v2.0.0*

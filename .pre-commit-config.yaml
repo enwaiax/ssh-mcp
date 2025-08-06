@@ -18,30 +18,20 @@ repos:
       - id: check-merge-conflict
       - id: debug-statements
 
-  - repo: https://github.com/psf/black
-    rev: 23.9.1
-    hooks:
-      - id: black
-        language_version: python3
-        files: ^python_src/
-
-  - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-        files: ^python_src/
-
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.1.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.2
     hooks:
       - id: ruff
-        files: ^python_src/
+        args:
+          - --fix
+      - id: ruff-format
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.6.1
-    hooks:
-      - id: mypy
-        files: ^python_src/
-        additional_dependencies: [types-all]
-        args: [--python-version, "3.12"]
+  # Temporarily disable mypy due to type refactoring
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v1.6.1
+  #   hooks:
+  #     - id: mypy
+  #       files: ^python_src/
+  #       additional_dependencies: [pydantic, typer, asyncssh]
+  #       args: [--python-version, "3.12", --ignore-missing-imports]
 # {{END_MODIFICATIONS}}

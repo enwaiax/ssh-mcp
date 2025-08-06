@@ -30,9 +30,9 @@ SSH MCP Tools v2 represents a significant architectural improvement while mainta
 
 Our migration strategy follows the principle of **"Zero Disruption, Maximum Benefit"**:
 
-✅ **100% API Compatibility** - No changes required to existing integrations  
-✅ **Gradual Migration** - Choose your own pace with flexible version control  
-✅ **Immediate Rollback** - Switch back to v1 instantly if needed  
+✅ **100% API Compatibility** - No changes required to existing integrations
+✅ **Gradual Migration** - Choose your own pace with flexible version control
+✅ **Immediate Rollback** - Switch back to v1 instantly if needed
 ✅ **Enhanced Features** - Gain new capabilities without losing existing functionality
 
 ## 🆕 What's New in v2
@@ -203,7 +203,7 @@ Choose one of these migration strategies:
          "command": "fastmcp-ssh-server",
          "args": [
            "--host", "your-server.com",
-           "--username", "your-user", 
+           "--username", "your-user",
            "--tools-version", "auto"
          ]
        }
@@ -227,7 +227,7 @@ Choose one of these migration strategies:
          "args": ["--host", "server.com", "--username", "user", "--tools-version", "v1"]
        },
        "ssh-mcp-server-v2": {
-         "command": "fastmcp-ssh-server", 
+         "command": "fastmcp-ssh-server",
          "args": ["--host", "server.com", "--username", "user", "--tools-version", "v2"]
        }
      }
@@ -457,7 +457,7 @@ uv run fastmcp-ssh-server --version
 
 **Symptoms**: Noticeably slower performance with v2
 
-**Solution**: 
+**Solution**:
 1. Check system resources
 2. Verify SSH connection stability
 3. Consider reverting to v1 if performance is critical
@@ -496,7 +496,7 @@ Migrating to SSH MCP Tools v2 provides significant benefits with minimal risk:
 
 - **Enhanced Development Experience** with modern patterns
 - **Better Observability** through structured logging
-- **Improved Maintainability** with self-contained tool definitions  
+- **Improved Maintainability** with self-contained tool definitions
 - **Future-Ready Architecture** built on FastMCP best practices
 
 The migration is designed to be **safe, gradual, and reversible**. Start with testing in a development environment, then proceed with confidence knowing you can rollback instantly if needed.
@@ -510,6 +510,6 @@ The migration is designed to be **safe, gradual, and reversible**. Start with te
 
 ---
 
-*Migration Guide Version: 1.0.0*  
-*Last Updated: August 2025*  
+*Migration Guide Version: 1.0.0*
+*Last Updated: August 2025*
 *Compatibility: SSH MCP Tools v1.x → v2.x*

@@ -52,7 +52,7 @@ cat > "$CONFIG_FILE" << EOF
       "args": [
         "--directory",
         "$PROJECT_PATH",
-        "run", 
+        "run",
         "fastmcp-ssh-server",
         "--host", "$SSH_HOST",
         "--port", "22",

@@ -5,7 +5,7 @@
       "args": [
         "--directory",
         "/raid/user/xiangw/workspace/toys/ssh-mcp-server",
-        "run", 
+        "run",
         "fastmcp-ssh-server",
         "--host", "viking-prod-527.ipp4a1.colossus.nvidia.com",
         "--port", "22",

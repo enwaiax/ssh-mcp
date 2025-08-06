@@ -27,7 +27,7 @@ SSHConnectionError: Failed to connect to server.com:22 - Connection refused
    # Check if SSH service is running
    sudo systemctl status ssh
    sudo systemctl status sshd
-   
+
    # Start SSH service if stopped
    sudo systemctl start ssh
    ```
@@ -36,7 +36,7 @@ SSHConnectionError: Failed to connect to server.com:22 - Connection refused
    ```bash
    # Test connection manually
    ssh user@host -p port
-   
+
    # Check if custom SSH port is configured
    grep "Port" /etc/ssh/sshd_config
    ```
@@ -46,7 +46,7 @@ SSHConnectionError: Failed to connect to server.com:22 - Connection refused
    # Test connectivity
    telnet host port
    nc -zv host port
-   
+
    # Check local firewall
    sudo ufw status
    sudo iptables -L
@@ -56,7 +56,7 @@ SSHConnectionError: Failed to connect to server.com:22 - Connection refused
    ```bash
    # Test basic connectivity
    ping host
-   
+
    # Check DNS resolution
    nslookup host
    dig host
@@ -105,7 +105,7 @@ SSHAuthenticationError: Authentication failed for user@host
    ```bash
    # Verify credentials manually
    ssh user@host
-   
+
    # Use correct credentials
    fastmcp-ssh-server --host host --username correct_user --password correct_pass
    ```
@@ -116,7 +116,7 @@ SSHAuthenticationError: Authentication failed for user@host
    ls -la ~/.ssh/id_rsa
    chmod 600 ~/.ssh/id_rsa
    chmod 700 ~/.ssh
-   
+
    # Test key manually
    ssh -i ~/.ssh/id_rsa user@host
    ```
@@ -125,7 +125,7 @@ SSHAuthenticationError: Authentication failed for user@host
    ```bash
    # Convert OpenSSH key to RSA format if needed
    ssh-keygen -p -m RFC4716 -f ~/.ssh/id_rsa
-   
+
    # Generate new key if corrupted
    ssh-keygen -t rsa -b 4096 -f ~/.ssh/new_key
    ```
@@ -145,7 +145,7 @@ SSHAuthenticationError: Authentication failed for user@host
    ```bash
    # Copy public key to server
    ssh-copy-id -i ~/.ssh/id_rsa.pub user@host
-   
+
    # Or manually
    cat ~/.ssh/id_rsa.pub | ssh user@host 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys'
    ```
@@ -154,7 +154,7 @@ SSHAuthenticationError: Authentication failed for user@host
    ```bash
    # On SSH server, check config
    sudo grep -E "(PubkeyAuthentication|PasswordAuthentication)" /etc/ssh/sshd_config
-   
+
    # Ensure public key auth is enabled
    # PubkeyAuthentication yes
    ```
@@ -195,10 +195,10 @@ SSHCommandError: Command denied by security policy: rm not allowed
    ```python
    # Test regex patterns
    import re
-   
+
    patterns = ["ls.*", "echo.*"]
    command = "ls -la"
-   
+
    matches = any(re.search(pattern, command) for pattern in patterns)
    print(f"Command '{command}' matches: {matches}")
    ```
@@ -236,7 +236,7 @@ SFTPError: Local file not found: /path/to/file.txt
    ```bash
    # Check if file exists
    ls -la /path/to/file.txt
-   
+
    # Use absolute path
    realpath /path/to/file.txt
    ```
@@ -272,7 +272,7 @@ SFTPError: Local file not found: /path/to/file.txt
    ```bash
    # Ensure write permissions on target directory
    ssh user@host "ls -la /target/directory/"
-   
+
    # Create directory if needed
    ssh user@host "mkdir -p /target/directory/"
    ```
@@ -299,7 +299,7 @@ RuntimeError: SSH manager not initialized
    # In Python code
    from python_ssh_mcp.ssh_manager import SSHConnectionManager
    from python_ssh_mcp.models import SSHConfig
-   
+
    # Create configuration
    config = SSHConfig(
        name="server1",
@@ -307,7 +307,7 @@ RuntimeError: SSH manager not initialized
        username="user",
        password="pass"
    )
-   
+
    # Initialize manager
    manager = await SSHConnectionManager.get_instance()
    manager.set_config({"server1": config})
@@ -379,7 +379,7 @@ from pathlib import Path
 async def run_diagnostics():
     print("🔍 FastMCP SSH Server Diagnostics")
     print("=" * 50)
-    
+
     # Check 1: Python version
     print("1. Python Version Check:")
     version = sys.version_info
@@ -387,18 +387,18 @@ async def run_diagnostics():
         print(f"   ✅ Python {version.major}.{version.minor}.{version.micro}")
     else:
         print(f"   ❌ Python {version.major}.{version.minor}.{version.micro} (need 3.12+)")
-    
+
     # Check 2: Dependencies
     print("\n2. Dependencies Check:")
     deps = ["asyncssh", "fastmcp", "pydantic", "typer", "loguru"]
-    
+
     for dep in deps:
         try:
             __import__(dep.replace("-", "_"))
             print(f"   ✅ {dep}")
         except ImportError:
             print(f"   ❌ {dep} - not installed")
-    
+
     # Check 3: SSH connectivity test
     print("\n3. SSH Test (if host provided):")
     if len(sys.argv) > 1:
@@ -417,7 +417,7 @@ async def run_diagnostics():
             print(f"   ❌ SSH test error: {e}")
     else:
         print("   ⏭️  Skipped (no host provided)")
-    
+
     # Check 4: FastMCP SSH Server
     print("\n4. FastMCP SSH Server Check:")
     try:
@@ -425,9 +425,9 @@ async def run_diagnostics():
         from python_ssh_mcp.ssh_manager import SSHConnectionManager
         from python_ssh_mcp.models import SSHConfig
         from python_ssh_mcp.server import SSHMCPServer
-        
+
         print("   ✅ Core modules import successfully")
-        
+
         # Test basic functionality
         config = SSHConfig(
             name="test",
@@ -436,10 +436,10 @@ async def run_diagnostics():
             password="test"
         )
         print("   ✅ Configuration model working")
-        
+
     except Exception as e:
         print(f"   ❌ FastMCP SSH Server error: {e}")
-    
+
     print("\n🎯 Diagnostic Summary:")
     print("   If all checks pass, the server should work correctly.")
     print("   If any check fails, resolve the issue before proceeding.")
@@ -472,7 +472,7 @@ python diagnostic.py user@host
    ```bash
    # Use efficient commands
    ls -1 instead of ls -la  # Less output
-   
+
    # Avoid unnecessary verbosity
    git status --porcelain  # Shorter output
    ```
@@ -492,7 +492,7 @@ python diagnostic.py user@host
    ```python
    import psutil
    import os
-   
+
    process = psutil.Process(os.getpid())
    print(f"Memory usage: {process.memory_info().rss / 1024 / 1024:.2f} MB")
    ```

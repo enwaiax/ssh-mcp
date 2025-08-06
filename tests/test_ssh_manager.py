@@ -92,27 +92,24 @@ class TestSSHConnectionManager:
         assert manager1 is manager2
         assert id(manager1) == id(manager2)
 
-        async def test_initialize_with_single_config(self, manager, ssh_config):
+    async def test_initialize_with_single_config(self, manager, ssh_config):
         """Test initialization with single SSH configuration."""
         configs = {"test_server": ssh_config}
-        
+
         manager.set_config(configs)
-        
+
         assert "test_server" in manager._configs
         assert manager._configs["test_server"] == ssh_config
         assert manager._default_name == "test_server"
 
-        async def test_initialize_with_multiple_configs(
+    async def test_initialize_with_multiple_configs(
         self, manager, ssh_config, ssh_config_with_key
     ):
         """Test initialization with multiple SSH configurations."""
-        configs = {
-            "test_server": ssh_config,
-            "test_key_server": ssh_config_with_key
-        }
-        
+        configs = {"test_server": ssh_config, "test_key_server": ssh_config_with_key}
+
         manager.set_config(configs)
-        
+
         assert len(manager._configs) == 2
         assert "test_server" in manager._configs
         assert "test_key_server" in manager._configs

@@ -9,9 +9,9 @@
 # {{START_MODIFICATIONS}}
 
 # FastMCP SSH Server - Docker Deployment
-# 
+#
 # Multi-stage Docker build for production deployment
-# 
+#
 # Build: docker build -t fastmcp-ssh-server .
 # Run:   docker run -d --name ssh-mcp-server \
 #          -e SSH_HOST=example.com \

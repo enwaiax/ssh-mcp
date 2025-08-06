@@ -45,7 +45,7 @@ This guide shows how to integrate the FastMCP SSH Server with Cursor IDE for AI-
       "args": [
         "--directory",
         "/path/to/ssh-mcp-server",
-        "run", 
+        "run",
         "fastmcp-ssh-server",
         "--host", "your-server.com",
         "--port", "22",
@@ -68,7 +68,7 @@ This guide shows how to integrate the FastMCP SSH Server with Cursor IDE for AI-
       "args": [
         "--directory",
         "/path/to/ssh-mcp-server",
-        "run", 
+        "run",
         "fastmcp-ssh-server",
         "--host", "prod-server.company.com",
         "--port", "22",
@@ -92,7 +92,7 @@ This guide shows how to integrate the FastMCP SSH Server with Cursor IDE for AI-
       "args": [
         "--directory",
         "/path/to/ssh-mcp-server",
-        "run", 
+        "run",
         "fastmcp-ssh-server",
         "--ssh", "name=prod,host=prod.example.com,port=22,user=admin,password=xxx",
         "--ssh", "name=dev,host=dev.example.com,port=22,user=developer,privateKey=~/.ssh/dev_key",
@@ -114,7 +114,7 @@ This guide shows how to integrate the FastMCP SSH Server with Cursor IDE for AI-
       "args": [
         "--directory",
         "/path/to/ssh-mcp-server",
-        "run", 
+        "run",
         "fastmcp-ssh-server",
         "--host", "secure-server.com",
         "--port", "22",
@@ -140,7 +140,7 @@ Download from: https://cursor.sh
 The configuration file location depends on your OS:
 
 - **macOS**: `~/Library/Application Support/Cursor/User/globalStorage/mcp.json`
-- **Linux**: `~/.config/Cursor/User/globalStorage/mcp.json`  
+- **Linux**: `~/.config/Cursor/User/globalStorage/mcp.json`
 - **Windows**: `%APPDATA%/Cursor/User/globalStorage/mcp.json`
 
 ### Step 3: Create or Update Configuration

@@ -30,7 +30,7 @@ def register_execute_command_tool(mcp, ssh_manager):
 async def execute_command(cmdString: str, ctx: Context = None):
     if ctx:
         await ctx.info(f"Executing: {cmdString}")
-    
+
 # ❌ 旧方式：闭包依赖
 def register_tool(mcp, ssh_manager):  # ssh_manager通过闭包传递
     async def execute_command(cmdString: str):

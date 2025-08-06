@@ -344,7 +344,7 @@ async def backup_logs():
             localPath="./backup/app.log",
             serverName="production"
         )
-        
+
         # Upload new configuration
         await session.call_tool(
             "upload",
@@ -362,7 +362,7 @@ asyncio.run(backup_logs())
 async def check_servers():
     async with ClientSession("fastmcp-ssh-server") as session:
         servers = await session.call_tool("list-servers")
-        
+
         for server in servers:
             print(f"Server: {server['name']}")
             print(f"Status: {server['status']}")

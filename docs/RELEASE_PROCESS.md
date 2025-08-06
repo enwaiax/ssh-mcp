@@ -178,7 +178,7 @@ Tests failed in CI/CD pipeline
 ```
 Package build failed
 ```
-**Solution**: 
+**Solution**:
 - Check `pyproject.toml` for syntax errors
 - Ensure all required files are included
 - Verify dependencies are correctly specified
@@ -187,7 +187,7 @@ Package build failed
 ```
 Authentication failed for PyPI
 ```
-**Solution**: 
+**Solution**:
 - Ensure GitHub repository has proper PyPI trusted publishing configured
 - Check that the repository name matches PyPI project name
 

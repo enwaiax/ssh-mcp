@@ -10,6 +10,7 @@ This test verifies:
 """
 
 import asyncio
+
 import pytest
 from fastmcp import Client
 
@@ -20,7 +21,7 @@ from python_src.python_ssh_mcp.server import SSHMCPServer
 @pytest.mark.asyncio
 async def test_ssh_mcp_server_integration():
     """Test SSH MCP server integration with FastMCP."""
-    
+
     # Create SSH MCP server instance
     ssh_server = SSHMCPServer("test-ssh-server")
     assert ssh_server is not None
@@ -52,7 +53,7 @@ async def test_ssh_mcp_server_integration():
         # List available tools
         tool_list = await client.list_tools()
         tool_names = [tool.name for tool in tool_list]
-        
+
         # Verify expected tools are present
         expected_tools = ["execute-command", "upload", "download", "list-servers"]
         for expected_tool in expected_tools:
@@ -61,8 +62,8 @@ async def test_ssh_mcp_server_integration():
         # Test list-servers tool functionality
         result = await client.call_tool("list-servers", {})
         assert result is not None
-        assert hasattr(result, 'data')
-        
+        assert hasattr(result, "data")
+
         # Cleanup
         if ssh_server:
             try:

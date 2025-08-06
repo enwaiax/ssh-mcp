@@ -60,7 +60,7 @@ async def execute_command(...):
 ```python
 # 最佳实践：使用Context获取依赖和会话信息
 async def execute_command(
-    cmdString: str, 
+    cmdString: str,
     connectionName: Optional[str] = None,
     ctx: Context = None  # Context依赖注入
 ):
@@ -170,7 +170,7 @@ await ctx.info("操作开始", extra={"param": value})
 # 调试日志
 await ctx.debug("详细信息", extra={"details": data})
 
-# 错误日志  
+# 错误日志
 await ctx.error("操作失败", extra={"error": str(e)})
 ```
 
@@ -255,7 +255,7 @@ operation_id = ctx.get_state("operation_id")
 SSH MCP Tools v2成功证明了FastMCP最佳实践的价值：
 
 1. **50%代码减少**：消除样板代码
-2. **增强功能**：日志、进度、状态管理  
+2. **增强功能**：日志、进度、状态管理
 3. **更好的调试**：结构化日志和错误追踪
 4. **LLM友好**：丰富的工具元数据
 5. **维护性提升**：清晰的代码结构

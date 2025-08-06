@@ -10,7 +10,7 @@
 # {{START_MODIFICATIONS}}
 
 # FastMCP SSH Server - Single Connection Example
-# 
+#
 # This example demonstrates how to connect to a single SSH server
 # with basic authentication and security configuration.
 #

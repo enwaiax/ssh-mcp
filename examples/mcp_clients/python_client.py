@@ -232,7 +232,7 @@ async def demonstrate_error_handling(client):
 
     # Try to execute a denied command
     try:
-        result = await client.call_tool(
+        await client.call_tool(
             "execute-command",
             cmdString="rm -rf /important/data",
             serverName="production",
@@ -244,7 +244,7 @@ async def demonstrate_error_handling(client):
 
     # Try to upload a non-existent file
     try:
-        result = await client.call_tool(
+        await client.call_tool(
             "upload",
             localPath="/non/existent/file.txt",
             remotePath="/tmp/test.txt",
@@ -312,7 +312,7 @@ async def real_mcp_example():
             serverName="production"
         )
         print(f"Server uptime: {result['stdout']}")
-        
+
         # Upload file
         await session.call_tool(
             "upload",
@@ -320,7 +320,7 @@ async def real_mcp_example():
             remotePath="/remote/config.json",
             serverName="production"
         )
-        
+
         # List servers
         servers = await session.call_tool("list-servers")
         for server in servers:

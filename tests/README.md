@@ -20,7 +20,7 @@ This directory contains the comprehensive test suite for the FastMCP SSH Server 
 ```
 tests/
 ├── test_ssh_manager.py      # SSH connection manager tests
-├── test_mcp_tools.py        # MCP tool implementation tests  
+├── test_mcp_tools.py        # MCP tool implementation tests
 ├── test_cli.py              # CLI argument parsing tests
 ├── test_integration.py      # End-to-end integration tests
 ├── test_mcp_integration.py  # FastMCP server integration tests (in-memory)
@@ -143,7 +143,7 @@ Tests for FastMCP tool implementations:
 - **Tool Registration**: Proper registration with FastMCP framework
 - **execute-command Tool**: Command execution with security validation
 - **upload Tool**: File upload functionality and error handling
-- **download Tool**: File download functionality and error handling  
+- **download Tool**: File download functionality and error handling
 - **list-servers Tool**: Server information listing
 - **Error Handling**: Consistent error response formatting
 - **Integration**: Tool interaction with SSH manager
@@ -280,7 +280,7 @@ python tests/run_tests.py --security --lint
 ### Test Naming Convention
 
 - Test files: `test_<module_name>.py`
-- Test classes: `Test<ComponentName>`  
+- Test classes: `Test<ComponentName>`
 - Test methods: `test_<functionality_description>`
 
 ### Test Structure Template
@@ -288,23 +288,23 @@ python tests/run_tests.py --security --lint
 ```python
 class TestNewComponent:
     """Test suite for new component functionality."""
-    
+
     @pytest.fixture
     def component_fixture(self):
         """Provide test component instance."""
         return NewComponent()
-    
+
     async def test_basic_functionality(self, component_fixture):
         """Test basic component functionality."""
         # Arrange
         input_data = "test input"
-        
+
         # Act
         result = await component_fixture.process(input_data)
-        
+
         # Assert
         assert result == "expected output"
-    
+
     async def test_error_handling(self, component_fixture):
         """Test component error handling."""
         with pytest.raises(ExpectedError, match="error message"):

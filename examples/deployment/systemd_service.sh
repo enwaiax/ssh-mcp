@@ -10,7 +10,7 @@
 # {{START_MODIFICATIONS}}
 
 # FastMCP SSH Server - SystemD Service Deployment
-# 
+#
 # This script sets up FastMCP SSH Server as a SystemD service
 # for production deployment with proper security and monitoring.
 #
@@ -80,19 +80,19 @@ echo "📦 Installing FastMCP SSH Server..."
 if [[ -d "python_src" ]]; then
     cp -r python_src "$INSTALL_DIR/"
     cp pyproject.toml "$INSTALL_DIR/"
-    
+
     # Install dependencies
     cd "$INSTALL_DIR"
-    
+
     # Install uv if not present
     if ! command -v uv &> /dev/null; then
         echo "Installing uv package manager..."
         curl -LsSf https://astral.sh/uv/install.sh | sh
     fi
-    
+
     # Install dependencies as the mcp user
     sudo -u "$USER" uv sync --no-dev
-    
+
     echo "✅ FastMCP SSH Server installed"
 else
     echo "❌ Error: python_src directory not found. Run this script from the project root."

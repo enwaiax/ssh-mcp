@@ -25,15 +25,18 @@ from .models import SSHConfig, SshConnectionConfigMap
 # Try to get version from package metadata
 try:
     import importlib.metadata
+
     __version__ = importlib.metadata.version("fastmcp-ssh-server")
 except (importlib.metadata.PackageNotFoundError, Exception):
     __version__ = "0.1.0"  # Fallback version
+
 
 # Version callback
 def version_callback(value: bool):
     if value:
         typer.echo(f"SSH MCP Server v{__version__}")
         raise typer.Exit()
+
 
 # Create Typer app
 app = typer.Typer(
@@ -95,10 +98,10 @@ class CLIParser:
         # Validate port number
         try:
             port = int(config_dict["port"])
-        except ValueError:
+        except ValueError as e:
             raise ValueError(
                 "Port for connection {config_dict['name']} must be a valid number"
-            )
+            ) from e
 
         # Check authentication method
         if not config_dict.get("password") and not config_dict.get("privateKey"):
@@ -191,8 +194,8 @@ class CLIParser:
         # Validate port number
         try:
             port_num = int(port)
-        except ValueError:
-            raise ValueError("Port must be a valid number")
+        except ValueError as e:
+            raise ValueError("Port must be a valid number") from e
 
         # Parse whitelist/blacklist
         whitelist_patterns = None
@@ -365,7 +368,7 @@ def main(
 
     except Exception as e:
         typer.echo(f"❌ Error: {e}", err=True)
-        raise typer.Exit(1)
+        raise typer.Exit(1) from e
 
 
 def parse_cli_args(
@@ -409,7 +412,7 @@ def parse_cli_args(
             ssh_config = CLIParser.parse_ssh_string(ssh_string)
             config_map[ssh_config.name] = ssh_config
         except Exception as e:
-            raise ValueError(f"Failed to parse SSH string '{ssh_string}': {e}")
+            raise ValueError(f"Failed to parse SSH string '{ssh_string}': {e}") from e
 
     # If no multi-connection configs, try single connection mode
     if not config_map:
@@ -427,7 +430,9 @@ def parse_cli_args(
             )
             config_map["default"] = single_config
         except Exception as e:
-            raise ValueError(f"Failed to parse single connection parameters: {e}")
+            raise ValueError(
+                f"Failed to parse single connection parameters: {e}"
+            ) from e
 
     return config_map
 

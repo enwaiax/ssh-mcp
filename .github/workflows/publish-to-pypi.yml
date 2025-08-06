@@ -14,26 +14,26 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.12"]
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    
+
     - name: Install uv
       uses: astral-sh/setup-uv@v3
-      
+
     - name: Install dependencies
       run: |
         uv sync --all-extras --dev
-        
+
     - name: Run tests
       run: |
         uv run pytest tests/ -v --cov=python_src --cov-report=xml
-        
+
     - name: Upload coverage reports
       uses: codecov/codecov-action@v3
       with:
@@ -44,22 +44,22 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: "3.12"
-    
+
     - name: Install uv
       uses: astral-sh/setup-uv@v3
-      
+
     - name: Build package
       run: |
         uv build
-        
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -74,14 +74,14 @@ jobs:
       url: https://test.pypi.org/p/fastmcp-ssh-server
     permissions:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
-    
+
     steps:
     - name: Download build artifacts
       uses: actions/download-artifact@v3
       with:
         name: dist
         path: dist/
-        
+
     - name: Publish to TestPyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
@@ -96,16 +96,16 @@ jobs:
       url: https://pypi.org/p/fastmcp-ssh-server
     permissions:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
-    
+
     # Only publish to PyPI on release events or version tags
     if: github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v')
-    
+
     steps:
     - name: Download build artifacts
       uses: actions/download-artifact@v3
       with:
         name: dist
         path: dist/
-        
+
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1

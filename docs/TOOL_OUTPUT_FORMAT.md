@@ -28,7 +28,7 @@ def command() -> str:
     return "ls -la"
 # 结果：{"result": "ls -la"} + TextContent
 
-# ✅ 无返回类型注解 - 纯文本输出  
+# ✅ 无返回类型注解 - 纯文本输出
 @mcp.tool
 def command():
     return "ls -la"
@@ -51,7 +51,7 @@ def command():
 ```python
 @mcp.tool("execute-command")
 async def execute_command(
-    cmdString: str, 
+    cmdString: str,
     connectionName: str | None = None
 ):  # 注意：无返回类型注解
     """执行SSH命令"""
@@ -104,7 +104,7 @@ Error: SSH connection [server1] failed: Permission denied
 
 保持与原TypeScript实现的接口兼容：
 - 相同的工具名称和参数
-- 相同的错误消息格式  
+- 相同的错误消息格式
 - 相同的输出内容（但格式更简洁）
 
 ## 最佳实践
