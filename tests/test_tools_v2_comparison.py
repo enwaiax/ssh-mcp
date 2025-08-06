@@ -21,7 +21,6 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 from fastmcp import Client
-
 from python_src.python_ssh_mcp import SSHMCPServer  # Unified server implementation
 from python_src.python_ssh_mcp.models import MCPResponse, SSHConfig
 

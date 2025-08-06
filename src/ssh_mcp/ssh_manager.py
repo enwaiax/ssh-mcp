@@ -23,6 +23,7 @@ from typing import Any, Optional
 import asyncssh
 
 from .models import ServerInfo, SSHConfig, SshConnectionConfigMap
+from .utils import Logger
 
 
 class SSHConnectionManager:
@@ -149,12 +150,12 @@ class SSHConnectionManager:
                 if config.passphrase:
                     connect_kwargs["passphrase"] = config.passphrase
 
-                print(f"Using SSH private key authentication for [{key}]")
+                Logger.info(f"Using SSH private key authentication for [{key}]")
 
             elif config.password:
                 # Use password authentication
                 connect_kwargs["password"] = config.password
-                print(f"Using password authentication for [{key}]")
+                Logger.info(f"Using password authentication for [{key}]")
 
             else:
                 raise ValueError(f"No valid authentication method provided for [{key}]")
@@ -166,7 +167,7 @@ class SSHConnectionManager:
             self._connections[key] = connection
             self._connected[key] = True
 
-            print(
+            Logger.info(
                 f"Successfully connected to SSH server [{key}] {config.host}:{config.port}"
             )
 

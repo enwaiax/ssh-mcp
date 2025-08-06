@@ -25,13 +25,19 @@ from .cli import app as cli_app
 from .utils import Logger, setup_logger
 
 
-def display_startup_banner(server_count: int) -> None:
+def display_startup_banner(server_count: int, transport: str = "stdio") -> None:
     """
     Display startup banner with server information.
+    Only displays for non-stdio transports to avoid interfering with MCP JSON protocol.
 
     Args:
         server_count: Number of configured SSH servers
+        transport: Transport protocol being used
     """
+    # Skip banner for stdio transport to avoid JSON protocol interference
+    if transport.lower() == "stdio":
+        return
+
     print("\n" + "=" * 60)
     print("🚀 FastMCP SSH Server")
     print("=" * 60)
@@ -39,7 +45,7 @@ def display_startup_banner(server_count: int) -> None:
     print(f"🔧 SSH Connections: {server_count} configured")
     print("🛠️  MCP Tools: execute-command, upload, download, list-servers")
     print("🌐 Protocol: Model Context Protocol (MCP)")
-    print("📡 Transport: stdin/stdout")
+    print(f"📡 Transport: {transport}")
     print("=" * 60)
     print("✅ Server ready for MCP connections!")
     print("💡 Press Ctrl+C to shutdown gracefully")
@@ -65,27 +71,21 @@ async def start_server_with_config(ssh_configs):
             {"version": __version__, "servers": len(ssh_configs)},
         )
 
-        # Display startup information
-        display_startup_banner(len(ssh_configs))
+        # FastMCP will handle banner display for stdio transport
+        # Custom banner skipped to avoid JSON protocol interference
 
         # Create SSH MCP server (unified implementation)
         server_name = "fastmcp-ssh-server"
         ssh_server = SSHMCPServer(server_name)
         Logger.info("SSH MCP Server instance created")
-        print("🚀 Using unified SSH MCP tools implementation")
+        Logger.info("Using unified SSH MCP tools implementation")
 
         # Initialize server with SSH configurations
-        print("🔌 Initializing SSH connections...")
         Logger.info("Initializing SSH connections", {"server_count": len(ssh_configs)})
         await ssh_server.initialize(ssh_configs)
-        print("✅ SSH connections initialized")
         Logger.info("SSH connections initialized successfully")
 
-        print("🔧 Registering MCP tools...")
         Logger.info("MCP tools registration completed")
-        print("✅ MCP tools registered")
-
-        print("🚀 Starting FastMCP server...")
         Logger.info("Starting FastMCP server")
 
         # Start the FastMCP server (FastMCP handles signals internally)
@@ -93,8 +93,8 @@ async def start_server_with_config(ssh_configs):
         await ssh_server.run()
 
     except KeyboardInterrupt:
-        print("\n👋 Server shutdown requested")
-        print("🔄 Cleaning up resources...")
+        print("\n👋 Server shutdown requested", file=sys.stderr)
+        print("🔄 Cleaning up resources...", file=sys.stderr)
         Logger.info("Server shutdown requested by user")
 
         # Graceful cleanup
@@ -102,20 +102,20 @@ async def start_server_with_config(ssh_configs):
             try:
                 Logger.info("Starting cleanup process")
                 await ssh_server.cleanup()
-                print("✅ Cleanup completed")
+                print("✅ Cleanup completed", file=sys.stderr)
                 Logger.info("Cleanup completed successfully")
             except Exception as cleanup_error:
-                print(f"⚠️  Cleanup warning: {cleanup_error}")
+                print(f"⚠️  Cleanup warning: {cleanup_error}", file=sys.stderr)
                 Logger.warning("Cleanup warning", {"error": str(cleanup_error)})
 
-        print("👋 FastMCP SSH Server stopped gracefully")
+        print("👋 FastMCP SSH Server stopped gracefully", file=sys.stderr)
         Logger.info("FastMCP SSH Server stopped gracefully")
 
         # Give a brief moment for final cleanup
         await asyncio.sleep(0.1)
 
     except Exception as e:
-        print(f"\n❌ Server startup failed: {e}")
+        print(f"\n❌ Server startup failed: {e}", file=sys.stderr)
         Logger.handle_error(e, "Server startup failed", include_traceback=True)
 
         # Attempt cleanup on error
@@ -147,11 +147,11 @@ def main() -> NoReturn:
         # Typer raises SystemExit on help, version, or other control flow
         sys.exit(e.code)
     except KeyboardInterrupt:
-        print("\n👋 Application interrupted by user")
+        print("\n👋 Application interrupted by user", file=sys.stderr)
         sys.exit(0)
     except Exception as e:
-        print(f"\n💥 Fatal error: {e}")
-        print("🔍 Please check your configuration and try again")
+        print(f"\n💥 Fatal error: {e}", file=sys.stderr)
+        print("🔍 Please check your configuration and try again", file=sys.stderr)
         # Try to log the fatal error if logging is set up
         try:
             Logger.critical("Fatal error in main", {"error": str(e)})

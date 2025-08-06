@@ -24,7 +24,6 @@ from unittest.mock import AsyncMock, patch
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from fastmcp import Client
-
 from python_src.python_ssh_mcp import SSHMCPServer
 from python_src.python_ssh_mcp.models import SSHConfig
 
