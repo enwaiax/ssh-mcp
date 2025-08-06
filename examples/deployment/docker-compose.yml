@@ -55,7 +55,7 @@ services:
 
     # Health check
     healthcheck:
-      test: ["CMD", "python", "-c", "import sys; sys.path.insert(0, '/app/python_src'); from python_ssh_mcp.utils import Logger; Logger.info('Health check')"]
+      test: ["CMD", "python", "-c", "import sys; sys.path.insert(0, '/app/src'); from python_ssh_mcp.utils import Logger; Logger.info('Health check')"]
       interval: 30s
       timeout: 10s
       retries: 3

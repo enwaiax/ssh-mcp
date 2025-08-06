@@ -77,8 +77,8 @@ echo ""
 echo "📦 Installing FastMCP SSH Server..."
 
 # Copy application files (assumes we're in the project directory)
-if [[ -d "python_src" ]]; then
-    cp -r python_src "$INSTALL_DIR/"
+if [[ -d "src" ]]; then
+    cp -r src "$INSTALL_DIR/"
     cp pyproject.toml "$INSTALL_DIR/"
 
     # Install dependencies
@@ -95,7 +95,7 @@ if [[ -d "python_src" ]]; then
 
     echo "✅ FastMCP SSH Server installed"
 else
-    echo "❌ Error: python_src directory not found. Run this script from the project root."
+    echo "❌ Error: src directory not found. Run this script from the project root."
     exit 1
 fi
 
@@ -117,7 +117,7 @@ Group=$GROUP
 WorkingDirectory=$INSTALL_DIR
 
 # Environment variables
-Environment=PYTHONPATH=$INSTALL_DIR/python_src
+Environment=PYTHONPATH=$INSTALL_DIR/src
 Environment=SSH_HOST=$SSH_HOST
 Environment=SSH_PORT=$SSH_PORT
 Environment=SSH_USERNAME=$SSH_USERNAME

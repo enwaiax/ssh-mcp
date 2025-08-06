@@ -25,8 +25,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-# Add the python_src directory to Python path for testing
-sys.path.insert(0, str(Path(__file__).parent.parent / "python_src"))
+# Add the src directory to Python path for testing
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from ssh_mcp.models import (
     DownloadParams,
@@ -137,7 +137,7 @@ class TestSSHConnectionManager:
         with pytest.raises(RuntimeError, match="SSH manager is already initialized"):
             manager.set_config([ssh_config])
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_get_connection_success(self, mock_connect, manager, ssh_config):
         """Test successful SSH connection establishment."""
         mock_connection = AsyncMock()
@@ -152,7 +152,7 @@ class TestSSHConnectionManager:
             host="localhost", port=22, username="testuser", password="testpass"
         )
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_get_connection_with_private_key(
         self, mock_connect, manager, ssh_config_with_key
     ):
@@ -171,7 +171,7 @@ class TestSSHConnectionManager:
             client_keys=["test_key_content"],
         )
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_get_connection_failure(self, mock_connect, manager, ssh_config):
         """Test SSH connection failure handling."""
         mock_connect.side_effect = Exception("Connection refused")
@@ -190,7 +190,7 @@ class TestSSHConnectionManager:
         with pytest.raises(SSHConnectionError, match="Unknown server: invalid_server"):
             await manager._get_connection("invalid_server")
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_connection_reuse(self, mock_connect, manager, ssh_config):
         """Test that existing connections are reused."""
         mock_connection = AsyncMock()
@@ -207,7 +207,7 @@ class TestSSHConnectionManager:
         assert connection1 == connection2
         assert mock_connect.call_count == 1
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_execute_command_success(self, mock_connect, manager, ssh_config):
         """Test successful command execution."""
         mock_connection = AsyncMock()
@@ -232,7 +232,7 @@ class TestSSHConnectionManager:
         assert result["exitCode"] == 0
         assert result["serverName"] == "test_server"
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_execute_command_with_timeout(
         self, mock_connect, manager, ssh_config
     ):
@@ -261,7 +261,7 @@ class TestSSHConnectionManager:
             "sleep 5 && echo 'Long running task completed'", timeout=60, check=False
         )
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_execute_command_denied(self, mock_connect, manager, ssh_config):
         """Test command execution with denied command."""
         mock_connection = AsyncMock()
@@ -276,7 +276,7 @@ class TestSSHConnectionManager:
         with pytest.raises(SSHCommandError, match="Command denied by security policy"):
             await manager.execute_command(params)
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_execute_command_not_allowed(self, mock_connect, manager, ssh_config):
         """Test command execution with command not in allow list."""
         mock_connection = AsyncMock()
@@ -291,7 +291,7 @@ class TestSSHConnectionManager:
         with pytest.raises(SSHCommandError, match="Command not in allowed list"):
             await manager.execute_command(params)
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_upload_file_success(self, mock_connect, manager, ssh_config):
         """Test successful file upload."""
         mock_connection = AsyncMock()
@@ -324,7 +324,7 @@ class TestSSHConnectionManager:
             # Cleanup
             Path(tmp_file.name).unlink()
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_upload_file_not_found(self, mock_connect, manager, ssh_config):
         """Test file upload with non-existent local file."""
         mock_connection = AsyncMock()
@@ -341,7 +341,7 @@ class TestSSHConnectionManager:
         with pytest.raises(SFTPError, match="Local file not found"):
             await manager.upload(params)
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_download_file_success(self, mock_connect, manager, ssh_config):
         """Test successful file download."""
         mock_connection = AsyncMock()
@@ -370,7 +370,7 @@ class TestSSHConnectionManager:
                 "/remote/path/file.txt", str(local_path)
             )
 
-    @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
+    @patch("ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_sftp_operation_failure(self, mock_connect, manager, ssh_config):
         """Test SFTP operation failure handling."""
         mock_connection = AsyncMock()
@@ -414,7 +414,7 @@ class TestSSHConnectionManager:
 
     async def test_cleanup(self, manager, ssh_config):
         """Test cleanup functionality."""
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             mock_connection = AsyncMock()
             mock_connect.return_value = mock_connection
 

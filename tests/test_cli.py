@@ -26,8 +26,8 @@ from unittest.mock import patch
 
 import pytest
 
-# Add the python_src directory to Python path for testing
-sys.path.insert(0, str(Path(__file__).parent.parent / "python_src"))
+# Add the src directory to Python path for testing
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from ssh_mcp.cli import CLIParser, parse_cli_args
 from ssh_mcp.models import SSHConfig

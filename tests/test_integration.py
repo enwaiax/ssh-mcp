@@ -26,8 +26,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-# Add the python_src directory to Python path for testing
-sys.path.insert(0, str(Path(__file__).parent.parent / "python_src"))
+# Add the src directory to Python path for testing
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from ssh_mcp import SSHMCPServer
 from ssh_mcp.cli import parse_cli_args
@@ -67,7 +67,7 @@ class TestFullServerIntegration:
         """Create and initialize SSH MCP server for integration testing."""
         server = SSHMCPServer("test-integration-server")
 
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             mock_connection = AsyncMock()
             mock_connect.return_value = mock_connection
 
@@ -78,7 +78,7 @@ class TestFullServerIntegration:
 
     async def test_server_initialization_flow(self, ssh_configs):
         """Test complete server initialization flow."""
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             mock_connection = AsyncMock()
             mock_connect.return_value = mock_connection
 
@@ -115,7 +115,7 @@ class TestFullServerIntegration:
         with patch("sys.argv", ["script"] + test_args):
             configs = parse_cli_args()
 
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             mock_connection = AsyncMock()
             mock_connect.return_value = mock_connection
 
@@ -133,7 +133,7 @@ class TestFullServerIntegration:
 
     async def test_multiple_ssh_connections_integration(self, ssh_configs):
         """Test integration with multiple SSH connections."""
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             # Mock different connections for different servers
             mock_connection_1 = AsyncMock()
             mock_connection_2 = AsyncMock()
@@ -154,7 +154,7 @@ class TestFullServerIntegration:
 
     async def test_error_propagation_integration(self, ssh_configs):
         """Test error propagation through the entire stack."""
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             # Simulate connection failure
             mock_connect.side_effect = Exception("Connection refused")
 
@@ -189,7 +189,7 @@ class TestMCPToolsIntegration:
     @pytest.fixture
     async def server_with_mocked_ssh(self, ssh_config):
         """Create server with mocked SSH connections for tool testing."""
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             mock_connection = AsyncMock()
             mock_connect.return_value = mock_connection
 
@@ -344,7 +344,7 @@ class TestPerformanceIntegration:
             command_blacklist=[],
         )
 
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             mock_connection = AsyncMock()
             mock_result = AsyncMock()
             mock_result.stdout = "concurrent command output"
@@ -389,7 +389,7 @@ class TestPerformanceIntegration:
             command_blacklist=[],
         )
 
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             mock_connection = AsyncMock()
             mock_result = AsyncMock()
             mock_result.stdout = "reuse test output"
@@ -427,7 +427,7 @@ class TestPerformanceIntegration:
             password="cleanuppass",
         )
 
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             mock_connection = AsyncMock()
             mock_connect.return_value = mock_connection
 
@@ -462,7 +462,7 @@ class TestErrorRecoveryIntegration:
             command_blacklist=[],
         )
 
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             # First call fails, second succeeds
             mock_connection = AsyncMock()
             mock_connect.side_effect = [Exception("Connection failed"), mock_connection]
@@ -527,7 +527,7 @@ class TestErrorRecoveryIntegration:
             command_blacklist=[],
         )
 
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect") as mock_connect:
             mock_connection = AsyncMock()
             mock_connect.return_value = mock_connection
 

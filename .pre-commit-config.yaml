@@ -31,7 +31,7 @@ repos:
   #   rev: v1.6.1
   #   hooks:
   #     - id: mypy
-  #       files: ^python_src/
+  #       files: ^src/
   #       additional_dependencies: [pydantic, typer, asyncssh]
   #       args: [--python-version, "3.12", --ignore-missing-imports]
 # {{END_MODIFICATIONS}}

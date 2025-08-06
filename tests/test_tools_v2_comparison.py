@@ -21,8 +21,9 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 from fastmcp import Client
-from python_src.python_ssh_mcp import SSHMCPServer  # Unified server implementation
-from python_src.python_ssh_mcp.models import MCPResponse, SSHConfig
+
+from src.ssh_mcp import SSHMCPServer  # Unified server implementation
+from src.ssh_mcp.models import MCPResponse, SSHConfig
 
 
 class TestToolsComparison:
@@ -55,7 +56,7 @@ class TestToolsComparison:
 
         # Mock SSH manager to avoid real connections
         with patch(
-            "python_src.python_ssh_mcp.ssh_manager.SSHConnectionManager"
+            "src.ssh_mcp.ssh_manager.SSHConnectionManager"
         ) as mock_manager_class:
             mock_manager = AsyncMock()
             mock_manager_class.get_instance.return_value = mock_manager
@@ -108,7 +109,7 @@ class TestToolsComparison:
 
         # Mock SSH manager to avoid real connections
         with patch(
-            "python_src.python_ssh_mcp.ssh_manager.SSHConnectionManager"
+            "src.ssh_mcp.ssh_manager.SSHConnectionManager"
         ) as mock_manager_class:
             mock_manager = AsyncMock()
             mock_manager_class.get_instance.return_value = mock_manager
@@ -142,11 +143,11 @@ class TestToolsComparison:
 
             # Mock the global SSH manager for v2 tools
             with patch(
-                "python_src.python_ssh_mcp.tools.ssh_tools._ssh_manager",
+                "src.ssh_mcp.tools.ssh_tools._ssh_manager",
                 mock_manager,
             ):
                 # Set the SSH manager manually to ensure tools work
-                from python_src.python_ssh_mcp.tools.ssh_tools import set_ssh_manager
+                from src.ssh_mcp.tools.ssh_tools import set_ssh_manager
 
                 set_ssh_manager(mock_manager)
 

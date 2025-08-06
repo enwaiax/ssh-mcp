@@ -29,9 +29,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-# Add the python_src directory to Python path
+# Add the src directory to Python path
 PROJECT_ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(PROJECT_ROOT / "python_src"))
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 
 class TestRunner:
@@ -41,7 +41,7 @@ class TestRunner:
         self.project_root = PROJECT_ROOT
         self.test_dir = self.project_root / "tests"
         self.coverage_dir = self.project_root / "htmlcov"
-        self.python_src = self.project_root / "python_src"
+        self.src = self.project_root / "src"
 
     def run_command(
         self, cmd: list[str], capture_output: bool = False
@@ -107,7 +107,7 @@ class TestRunner:
             cmd.extend(["-v", "--tb=long"])
 
         if coverage:
-            cmd.extend(["--cov=python_src/python_ssh_mcp", "--cov-report=term-missing"])
+            cmd.extend(["--cov=src/ssh_mcp", "--cov-report=term-missing"])
 
         result = self.run_command(cmd)
         return result.returncode == 0
@@ -134,7 +134,7 @@ class TestRunner:
         if coverage:
             cmd.extend(
                 [
-                    "--cov=python_src/python_ssh_mcp",
+                    "--cov=src/ssh_mcp",
                     "--cov-report=term-missing",
                     "--cov-append",  # Append to existing coverage
                 ]
@@ -164,7 +164,7 @@ class TestRunner:
         if coverage:
             cmd.extend(
                 [
-                    "--cov=python_src/python_ssh_mcp",
+                    "--cov=src/ssh_mcp",
                     "--cov-report=term-missing",
                     "--cov-report=html",
                     "--cov-fail-under=90",
@@ -233,16 +233,14 @@ class TestRunner:
         # Run ruff
         print("Running ruff...")
         ruff_result = self.run_command(
-            [sys.executable, "-m", "ruff", "check", str(self.python_src)]
+            [sys.executable, "-m", "ruff", "check", str(self.src)]
         )
         if ruff_result.returncode != 0:
             success = False
 
         # Run mypy
         print("Running mypy...")
-        mypy_result = self.run_command(
-            [sys.executable, "-m", "mypy", str(self.python_src)]
-        )
+        mypy_result = self.run_command([sys.executable, "-m", "mypy", str(self.src)])
         if mypy_result.returncode != 0:
             print("⚠️  MyPy found issues (not failing build)")
 

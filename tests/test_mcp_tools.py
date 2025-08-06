@@ -25,8 +25,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-# Add the python_src directory to Python path for testing
-sys.path.insert(0, str(Path(__file__).parent.parent / "python_src"))
+# Add the src directory to Python path for testing
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from ssh_mcp import SSHMCPServer
 from ssh_mcp.models import (
@@ -483,7 +483,7 @@ class TestMCPToolIntegration:
 
     async def test_ssh_mcp_server_tool_registration(self, ssh_config):
         """Test that SSH MCP server correctly registers all tools."""
-        with patch("python_ssh_mcp.ssh_manager.asyncssh.connect"):
+        with patch("ssh_mcp.ssh_manager.asyncssh.connect"):
             server = SSHMCPServer("test-server")
             await server.initialize([ssh_config])
 

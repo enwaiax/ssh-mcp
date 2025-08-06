@@ -21,6 +21,7 @@ Version: 2.0.0
 """
 
 from fastmcp import Context, FastMCP
+from fastmcp.exceptions import ToolError
 from mcp.types import ToolAnnotations
 
 from ..ssh_manager import SSHConnectionManager
@@ -146,10 +147,10 @@ async def execute_command(
         return result.strip() if result else ""
 
     except (SSHConnectionError, MCPToolError) as error:
-        error_msg = f"Error: {str(error)}"
+        error_msg = f"SSH command execution failed: {str(error)}"
         if ctx:
             await ctx.error(
-                f"SSH command execution failed: {error_msg}",
+                error_msg,
                 extra={
                     "connection": connectionName or "default",
                     "command": cmdString,
@@ -157,12 +158,13 @@ async def execute_command(
                     "error": str(error),
                 },
             )
-        return error_msg
+        # Use ToolError to properly notify MCP client
+        raise ToolError(error_msg) from error
     except Exception as error:
-        error_msg = f"Error: {str(error)}"
+        error_msg = f"Unexpected error during command execution: {str(error)}"
         if ctx:
             await ctx.error(
-                f"Unexpected error during command execution: {error_msg}",
+                error_msg,
                 extra={
                     "connection": connectionName or "default",
                     "command": cmdString,
@@ -170,7 +172,8 @@ async def execute_command(
                     "error": str(error),
                 },
             )
-        return error_msg
+        # Use ToolError to properly notify MCP client
+        raise ToolError(error_msg) from error
 
 
 @mcp.tool(
@@ -250,10 +253,10 @@ async def upload(
         return result.strip() if result else "Upload completed successfully"
 
     except (SFTPError, SSHConnectionError, MCPToolError) as error:
-        error_msg = f"Upload error: {str(error)}"
+        error_msg = f"File upload failed: {str(error)}"
         if ctx:
             await ctx.error(
-                f"File upload failed: {error_msg}",
+                error_msg,
                 extra={
                     "local_path": localPath,
                     "remote_path": remotePath,
@@ -262,12 +265,13 @@ async def upload(
                     "error": str(error),
                 },
             )
-        return error_msg
+        # Use ToolError to properly notify MCP client
+        raise ToolError(error_msg) from error
     except Exception as error:
-        error_msg = f"Upload error: {str(error)}"
+        error_msg = f"Unexpected error during file upload: {str(error)}"
         if ctx:
             await ctx.error(
-                f"Unexpected error during file upload: {error_msg}",
+                error_msg,
                 extra={
                     "local_path": localPath,
                     "remote_path": remotePath,
@@ -276,7 +280,8 @@ async def upload(
                     "error": str(error),
                 },
             )
-        return error_msg
+        # Use ToolError to properly notify MCP client
+        raise ToolError(error_msg) from error
 
 
 @mcp.tool(
@@ -356,10 +361,10 @@ async def download(
         return result.strip() if result else "Download completed successfully"
 
     except (SFTPError, SSHConnectionError, MCPToolError) as error:
-        error_msg = f"Download error: {str(error)}"
+        error_msg = f"File download failed: {str(error)}"
         if ctx:
             await ctx.error(
-                f"File download failed: {error_msg}",
+                error_msg,
                 extra={
                     "remote_path": remotePath,
                     "local_path": localPath,
@@ -368,12 +373,13 @@ async def download(
                     "error": str(error),
                 },
             )
-        return error_msg
+        # Use ToolError to properly notify MCP client
+        raise ToolError(error_msg) from error
     except Exception as error:
-        error_msg = f"Download error: {str(error)}"
+        error_msg = f"Unexpected error during file download: {str(error)}"
         if ctx:
             await ctx.error(
-                f"Unexpected error during file download: {error_msg}",
+                error_msg,
                 extra={
                     "remote_path": remotePath,
                     "local_path": localPath,
@@ -382,7 +388,8 @@ async def download(
                     "error": str(error),
                 },
             )
-        return error_msg
+        # Use ToolError to properly notify MCP client
+        raise ToolError(error_msg) from error
 
 
 @mcp.tool(
@@ -458,29 +465,31 @@ async def list_servers(ctx: Context | None = None) -> str:
         return result
 
     except MCPToolError as error:
-        error_msg = f"Error: {str(error)}"
+        error_msg = f"Failed to list servers: {str(error)}"
         if ctx:
             await ctx.error(
-                f"Failed to list servers: {error_msg}",
+                error_msg,
                 extra={
                     "error_type": type(error).__name__,
                     "error": str(error),
                     "operation": "list-servers",
                 },
             )
-        return error_msg
+        # Use ToolError to properly notify MCP client
+        raise ToolError(error_msg) from error
     except Exception as error:
-        error_msg = f"Error: {str(error)}"
+        error_msg = f"Unexpected error listing servers: {str(error)}"
         if ctx:
             await ctx.error(
-                f"Unexpected error listing servers: {error_msg}",
+                error_msg,
                 extra={
                     "error_type": type(error).__name__,
                     "error": str(error),
                     "operation": "list-servers",
                 },
             )
-        return error_msg
+        # Use ToolError to properly notify MCP client
+        raise ToolError(error_msg) from error
 
 
 async def initialize_server(ssh_configs) -> FastMCP:

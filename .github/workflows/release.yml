@@ -50,8 +50,8 @@ jobs:
       run: |
         uv sync --all-extras --dev
         uv run pytest tests/ -v
-        uv run ruff check python_src/
-        uv run ruff format --check python_src/
+        uv run ruff check src/
+        uv run ruff format --check src/
 
     - name: Build package
       run: |

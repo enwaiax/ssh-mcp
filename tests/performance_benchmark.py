@@ -24,8 +24,9 @@ from unittest.mock import AsyncMock, patch
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from fastmcp import Client
-from python_src.python_ssh_mcp import SSHMCPServer
-from python_src.python_ssh_mcp.models import SSHConfig
+
+from src.ssh_mcp import SSHMCPServer
+from src.ssh_mcp.models import SSHConfig
 
 
 class PerformanceBenchmark:
@@ -57,7 +58,7 @@ class PerformanceBenchmark:
 
         # Mock SSH manager to avoid real connections
         with patch(
-            "python_src.python_ssh_mcp.ssh_manager.SSHConnectionManager"
+            "src.ssh_mcp.ssh_manager.SSHConnectionManager"
         ) as mock_manager_class:
             mock_manager = AsyncMock()
             mock_manager_class.get_instance.return_value = mock_manager
@@ -88,7 +89,7 @@ class PerformanceBenchmark:
 
             # Mock global SSH manager for v2
             with patch(
-                "python_src.python_ssh_mcp.tools.v2.ssh_tools._ssh_manager",
+                "src.ssh_mcp.tools.v2.ssh_tools._ssh_manager",
                 mock_manager,
             ):
                 try:

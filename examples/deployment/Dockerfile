@@ -37,7 +37,7 @@ WORKDIR /app
 
 # Copy project files
 COPY pyproject.toml ./
-COPY python_src/ ./python_src/
+COPY src/ ./src/
 
 # Install dependencies
 RUN uv sync --no-dev
@@ -58,7 +58,7 @@ WORKDIR /app
 
 # Copy application and virtual environment from builder
 COPY --from=builder /app/.venv /app/.venv
-COPY --from=builder /app/python_src /app/python_src
+COPY --from=builder /app/src /app/src
 COPY --from=builder /app/pyproject.toml /app/pyproject.toml
 
 # Create directories for SSH keys and logs
@@ -67,7 +67,7 @@ RUN mkdir -p /app/keys /app/logs && \
     chmod 700 /app/keys
 
 # Set environment variables
-ENV PYTHONPATH=/app/python_src
+ENV PYTHONPATH=/app/src
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Default configuration
@@ -85,7 +85,7 @@ ENV LOG_LEVEL=info
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "
 import sys
-sys.path.insert(0, '/app/python_src')
+sys.path.insert(0, '/app/src')
 from python_ssh_mcp.utils import Logger
 Logger.info('Health check')
 " || exit 1

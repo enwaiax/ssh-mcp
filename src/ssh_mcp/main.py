@@ -82,8 +82,19 @@ async def start_server_with_config(ssh_configs):
 
         # Initialize server with SSH configurations
         Logger.info("Initializing SSH connections", {"server_count": len(ssh_configs)})
-        await ssh_server.initialize(ssh_configs)
-        Logger.info("SSH connections initialized successfully")
+        try:
+            await ssh_server.initialize(ssh_configs)
+            Logger.info("SSH connections initialized successfully")
+        except Exception as init_error:
+            Logger.handle_error(
+                init_error, "SSH initialization failed", include_traceback=True
+            )
+            print(f"\n❌ SSH initialization failed: {init_error}", file=sys.stderr)
+            print(
+                "🚪 Server cannot start without valid SSH connections. Exiting...",
+                file=sys.stderr,
+            )
+            sys.exit(1)
 
         Logger.info("MCP tools registration completed")
         Logger.info("Starting FastMCP server")

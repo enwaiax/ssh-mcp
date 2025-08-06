@@ -103,13 +103,31 @@ class SSHConnectionManager:
         return self._configs[key]
 
     async def connect_all(self) -> None:
-        """Connect to all configured SSH servers."""
+        """
+        Connect to all configured SSH servers.
+
+        Raises:
+            ConnectionError: If any connection fails
+        """
         tasks = []
         for name in self._configs.keys():
             tasks.append(self.connect(name))
 
         if tasks:
-            await asyncio.gather(*tasks, return_exceptions=True)
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+
+            # Check for any failed connections
+            failed_connections = []
+            for i, result in enumerate(results):
+                if isinstance(result, Exception):
+                    connection_name = list(self._configs.keys())[i]
+                    failed_connections.append(f"{connection_name}: {result}")
+
+            if failed_connections:
+                error_msg = (
+                    f"Failed to connect to SSH servers: {'; '.join(failed_connections)}"
+                )
+                raise ConnectionError(error_msg)
 
     async def connect(self, name: str | None = None) -> None:
         """

@@ -13,8 +13,9 @@ import asyncio
 
 import pytest
 from fastmcp import Client
-from python_src.python_ssh_mcp import SSHMCPServer
-from python_src.python_ssh_mcp.models import SSHConfig
+
+from src.ssh_mcp import SSHMCPServer
+from src.ssh_mcp.models import SSHConfig
 
 
 @pytest.mark.asyncio

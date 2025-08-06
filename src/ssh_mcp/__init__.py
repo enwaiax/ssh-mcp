@@ -22,7 +22,7 @@ Features:
 - Full compatibility with TypeScript version API
 
 Quick Start:
-    from python_ssh_mcp import SSHMCPServer
+    from ssh_mcp import SSHMCPServer
     server = SSHMCPServer()
     await server.initialize(ssh_configs)
     await server.run()

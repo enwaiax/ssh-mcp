@@ -4,14 +4,14 @@
 #   Timestamp: "2025-08-05T20:12:54+08:00"
 #   Authoring_Role: "LD"
 #   Principle_Applied: "SOLID-S (单一职责原则)"
-#   Quality_Check: "Python模块入口点，支持python -m python_ssh_mcp运行"
+#   Quality_Check: "Python模块入口点，支持python -m ssh_mcp运行"
 # }}
 # {{START_MODIFICATIONS}}
 """
 FastMCP SSH Server - Module Entry Point
 
 This module allows the package to be run as a module:
-    python -m python_ssh_mcp
+    python -m ssh_mcp
 
 It simply imports and calls the main function from the main module.
 """
