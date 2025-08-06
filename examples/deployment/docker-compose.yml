@@ -1,0 +1,124 @@
+# {{RIPER-5:
+#   Action: "Added"
+#   Task_ID: "3702898f-86db-43bb-aae0-0161b6a8eedf"
+#   Timestamp: "2025-08-05T21:23:20+08:00"
+#   Authoring_Role: "LD"
+#   Principle_Applied: "容器编排 + 配置管理"
+#   Quality_Check: "完整的Docker Compose配置，支持开发和生产环境"
+# }}
+# {{START_MODIFICATIONS}}
+version: '3.8'
+
+services:
+  fastmcp-ssh-server:
+    build:
+      context: ../../
+      dockerfile: examples/deployment/Dockerfile
+    container_name: fastmcp-ssh-server
+    restart: unless-stopped
+    
+    # Environment configuration
+    environment:
+      # SSH Connection Settings
+      SSH_HOST: ${SSH_HOST:-example.com}
+      SSH_PORT: ${SSH_PORT:-22}
+      SSH_USERNAME: ${SSH_USERNAME:-user}
+      SSH_PASSWORD: ${SSH_PASSWORD:-}
+      SSH_PRIVATE_KEY: /app/keys/id_rsa
+      SSH_PASSPHRASE: ${SSH_PASSPHRASE:-}
+      
+      # Security Settings
+      WHITELIST: ${WHITELIST:-ls,pwd,echo.*,uptime,whoami,git status}
+      BLACKLIST: ${BLACKLIST:-rm.*,sudo.*,chmod.*,dd.*}
+      
+      # Logging
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    
+    # Volume mounts
+    volumes:
+      # SSH keys directory
+      - ssh-keys:/app/keys
+      # Logs directory  
+      - ssh-logs:/app/logs
+      # Optional: Mount your SSH key directly
+      # - ~/.ssh/id_rsa:/app/keys/id_rsa:ro
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.path.insert(0, '/app/python_src'); from python_ssh_mcp.utils import Logger; Logger.info('Health check')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    
+    # Security settings
+    security_opt:
+      - no-new-privileges:true
+    
+    # User settings
+    user: "1000:1000"  # Adjust to your user ID
+    
+    # No ports exposed (MCP over stdin/stdout)
+    # ports:
+    #   - "8080:8080"  # If you add HTTP API later
+
+  # Optional: Log aggregation service
+  log-collector:
+    image: fluent/fluentd:latest
+    container_name: fastmcp-log-collector
+    restart: unless-stopped
+    profiles:
+      - monitoring
+    volumes:
+      - ssh-logs:/var/log/input:ro
+      - ./fluentd.conf:/fluentd/etc/fluent.conf:ro
+    environment:
+      FLUENTD_CONF: fluent.conf
+    depends_on:
+      - fastmcp-ssh-server
+
+  # Optional: Monitoring service
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: fastmcp-prometheus
+    restart: unless-stopped
+    profiles:
+      - monitoring
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+
+volumes:
+  ssh-keys:
+    driver: local
+  ssh-logs:
+    driver: local
+  prometheus-data:
+    driver: local
+
+# Networks (if needed for complex setups)
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# {{END_MODIFICATIONS}}
