@@ -35,73 +35,45 @@ from python_ssh_mcp.models import (
     SSHConfig,
     UploadParams,
 )
-from python_ssh_mcp.tools import (
-    register_download_tool,
-    register_execute_command_tool,
-    register_list_servers_tool,
-    register_upload_tool,
-)
+from python_ssh_mcp.tools import initialize_server, mcp
 from python_ssh_mcp.utils import SFTPError, SSHCommandError, SSHConnectionError
 
 
 class TestMCPToolRegistration:
     """Test suite for MCP tool registration."""
 
-    @pytest.fixture
-    def mock_mcp_server(self):
-        """Create mock FastMCP server for testing."""
-        mock_server = MagicMock()
-        mock_server.tool = MagicMock()
-        return mock_server
+    async def test_v2_tools_are_registered(self):
+        """Test that v2 tools are automatically registered via decorators."""
+        # v2 tools are registered automatically via decorators
+        # Get registered tools using FastMCP API
+        tools_dict = await mcp.get_tools()
 
-    @pytest.fixture
-    def mock_ssh_manager(self):
-        """Create mock SSH manager for testing."""
-        mock_manager = AsyncMock()
-        return mock_manager
+        # Get registered tool names (keys of the dictionary)
+        tool_names = list(tools_dict.keys())
 
-    def test_register_execute_command_tool(self, mock_mcp_server, mock_ssh_manager):
-        """Test execute-command tool registration."""
-        register_execute_command_tool(mock_mcp_server, mock_ssh_manager)
+        # Verify all expected tools are registered
+        expected_tools = ["execute-command", "upload", "download", "list-servers"]
+        for tool_name in expected_tools:
+            assert tool_name in tool_names, (
+                f"Tool {tool_name} not found in registered tools"
+            )
 
-        # Verify tool was registered with correct decorator
-        mock_mcp_server.tool.assert_called_once()
-        args, kwargs = mock_mcp_server.tool.call_args
+        # Verify tools have proper FunctionTool objects
+        for tool_name, tool_obj in tools_dict.items():
+            assert hasattr(tool_obj, "name"), f"Tool {tool_name} missing name attribute"
+            assert tool_obj.name == tool_name, (
+                f"Tool name mismatch: {tool_obj.name} != {tool_name}"
+            )
 
-        # Check decorator arguments
-        assert "name" in kwargs
-        assert kwargs["name"] == "execute-command"
-        assert "description" in kwargs
+    def test_initialize_server_function_exists(self):
+        """Test that initialize_server function is available."""
+        # Verify the function is imported and callable
+        assert callable(initialize_server)
 
-    def test_register_upload_tool(self, mock_mcp_server, mock_ssh_manager):
-        """Test upload tool registration."""
-        register_upload_tool(mock_mcp_server, mock_ssh_manager)
+        # Verify it's an async function
+        import inspect
 
-        mock_mcp_server.tool.assert_called_once()
-        args, kwargs = mock_mcp_server.tool.call_args
-
-        assert kwargs["name"] == "upload"
-        assert "description" in kwargs
-
-    def test_register_download_tool(self, mock_mcp_server, mock_ssh_manager):
-        """Test download tool registration."""
-        register_download_tool(mock_mcp_server, mock_ssh_manager)
-
-        mock_mcp_server.tool.assert_called_once()
-        args, kwargs = mock_mcp_server.tool.call_args
-
-        assert kwargs["name"] == "download"
-        assert "description" in kwargs
-
-    def test_register_list_servers_tool(self, mock_mcp_server, mock_ssh_manager):
-        """Test list-servers tool registration."""
-        register_list_servers_tool(mock_mcp_server, mock_ssh_manager)
-
-        mock_mcp_server.tool.assert_called_once()
-        args, kwargs = mock_mcp_server.tool.call_args
-
-        assert kwargs["name"] == "list-servers"
-        assert "description" in kwargs
+        assert inspect.iscoroutinefunction(initialize_server)
 
 
 class TestExecuteCommandTool:
