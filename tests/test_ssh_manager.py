@@ -61,12 +61,21 @@ class TestSSHConnectionManager:
     @pytest.fixture
     def ssh_config_with_key(self):
         """Provide test SSH configuration with private key."""
+        # Create a temporary private key file for testing
+        import tempfile
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".pem", delete=False) as f:
+            f.write("-----BEGIN PRIVATE KEY-----\n")
+            f.write("test_key_content_for_testing\n")
+            f.write("-----END PRIVATE KEY-----\n")
+            temp_key_path = f.name
+
         return SSHConfig(
             name="test_key_server",
             host="192.168.1.100",
             port=2222,
             username="keyuser",
-            private_key="/path/to/key.pem",
+            private_key=temp_key_path,
             command_whitelist=["*"],
             command_blacklist=[],
         )
@@ -159,7 +168,7 @@ class TestSSHConnectionManager:
             host="192.168.1.100",
             port=2222,
             username="keyuser",
-            client_keys=["/path/to/key.pem"],
+            client_keys=["test_key_content"],
         )
 
     @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")

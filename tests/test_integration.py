@@ -56,7 +56,7 @@ class TestFullServerIntegration:
                 host="192.168.1.100",
                 port=2222,
                 username="testuser2",
-                private_key_path="/path/to/key.pem",
+                password="testpass2",  # Use password instead of non-existent key file
                 command_whitelist=["*"],
                 command_blacklist=["rm -rf"],
             ),
