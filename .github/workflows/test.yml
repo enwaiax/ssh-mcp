@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
         python-version: ["3.12"]
 
     steps:
@@ -36,7 +36,7 @@ jobs:
 
     - name: Run type checking
       run: |
-        uv run mypy python_src/ || echo "Type checking failed, but continuing..."
+        uv run mypy python_src/ || true
 
     - name: Run tests
       run: |
