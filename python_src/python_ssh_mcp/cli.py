@@ -22,6 +22,19 @@ import typer
 
 from .models import SSHConfig, SshConnectionConfigMap
 
+# Try to get version from package metadata
+try:
+    import importlib.metadata
+    __version__ = importlib.metadata.version("fastmcp-ssh-server")
+except (importlib.metadata.PackageNotFoundError, Exception):
+    __version__ = "0.1.0"  # Fallback version
+
+# Version callback
+def version_callback(value: bool):
+    if value:
+        typer.echo(f"SSH MCP Server v{__version__}")
+        raise typer.Exit()
+
 # Create Typer app
 app = typer.Typer(
     name="ssh-mcp-server",
@@ -295,6 +308,15 @@ def main(
     positionals: Annotated[
         list[str] | None,
         typer.Argument(help="Positional arguments: host port username password"),
+    ] = None,
+    version: Annotated[
+        bool | None,
+        typer.Option(
+            "--version",
+            callback=version_callback,
+            is_eager=True,
+            help="Show version and exit",
+        ),
     ] = None,
 ):
     """

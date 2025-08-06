@@ -15,9 +15,13 @@ build-backend = "hatchling.build"
 name = "fastmcp-ssh-server"
 version = "0.1.0"
 description = "FastMCP-based SSH server for Model Context Protocol - Python implementation"
-authors = [{ name = "AI Assistant", email = "ai@example.com" }]
+authors = [{ name = "enwaiax", email = "enwaiax@users.noreply.github.com" }]
 readme = "README.md"
 license = { text = "ISC" }
+homepage = "https://github.com/enwaiax/ssh-mcp"
+repository = "https://github.com/enwaiax/ssh-mcp"
+documentation = "https://github.com/enwaiax/ssh-mcp#readme"
+issues = "https://github.com/enwaiax/ssh-mcp/issues"
 requires-python = ">=3.12"
 keywords = ["ssh", "mcp", "fastmcp", "server", "ai", "llm"]
 classifiers = [
