@@ -163,7 +163,7 @@ class TestFullServerIntegration:
 
             # Test that connection errors are properly handled
             with pytest.raises(
-                Exception
+                (OSError, RuntimeError, ValueError)
             ):  # Should be wrapped in SSH-specific exception
                 await server.ssh_manager._get_connection("test_server_1")
 
@@ -471,7 +471,7 @@ class TestErrorRecoveryIntegration:
             await server.initialize([ssh_config])
 
             # First connection attempt should fail
-            with pytest.raises(Exception):
+            with pytest.raises((OSError, RuntimeError, ValueError)):
                 await server.ssh_manager._get_connection("recovery_test")
 
             # Reset the side effect for second attempt
@@ -564,7 +564,7 @@ class TestErrorRecoveryIntegration:
             )
 
             with pytest.raises(
-                Exception
+                (OSError, RuntimeError, ValueError)
             ):  # Should be wrapped in SFTP-specific exception
                 await server.ssh_manager.upload(upload_params)
 

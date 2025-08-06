@@ -22,7 +22,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 from fastmcp import Client
 
-from python_src.python_ssh_mcp.models import SSHConfig
+from python_src.python_ssh_mcp.models import MCPResponse, SSHConfig
 from python_src.python_ssh_mcp.server import SSHMCPServer  # v1 server
 from python_src.python_ssh_mcp.tools.v2.server import OptimizedSSHMCPServer  # v2 server
 
@@ -254,9 +254,8 @@ class TestToolsComparison:
                 v2_result = await v2_client.call_tool("execute-command", test_case)
 
                 # Both should succeed or fail consistently
-                assert type(v1_result) == type(v2_result), (
-                    f"Result types differ for {test_case}"
-                )
+                assert isinstance(v1_result, MCPResponse)
+                assert isinstance(v2_result, MCPResponse)
 
                 # For successful calls, verify content structure
                 if hasattr(v1_result, "content") and hasattr(v2_result, "content"):
@@ -300,9 +299,8 @@ class TestToolsComparison:
                 v2_result = await v2_client.call_tool("upload", test_case)
 
                 # Verify result structure consistency
-                assert type(v1_result) == type(v2_result), (
-                    f"Upload result types differ for {test_case}"
-                )
+                assert isinstance(v1_result, MCPResponse)
+                assert isinstance(v2_result, MCPResponse)
 
     @pytest.mark.asyncio
     async def test_download_tool_compatibility(self, v1_server, v2_server):
@@ -333,9 +331,8 @@ class TestToolsComparison:
                 v2_result = await v2_client.call_tool("download", test_case)
 
                 # Verify result structure consistency
-                assert type(v1_result) == type(v2_result), (
-                    f"Download result types differ for {test_case}"
-                )
+                assert isinstance(v1_result, MCPResponse)
+                assert isinstance(v2_result, MCPResponse)
 
     @pytest.mark.asyncio
     async def test_list_servers_compatibility(self, v1_server, v2_server):

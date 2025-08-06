@@ -1,21 +1,3 @@
-# {{RIPER-5:
-
-# Action: "Added"
-
-# Task_ID: "3702898f-86db-43bb-aae0-0161b6a8eedf"
-
-# Timestamp: "2025-08-05T21:23:20+08:00"
-
-# Authoring_Role: "LD"
-
-# Principle_Applied: "文档即代码 + 用户体验优先"
-
-# Quality_Check: "完整的项目文档，清晰的安装使用指南，专业的部署配置"
-
-# }}
-
-# {{START_MODIFICATIONS}}
-
 # FastMCP SSH Server - Python Implementation
 
 [![Python Version](https://img.shields.io/badge/python-3.12+-blue.svg)](https://python.org)

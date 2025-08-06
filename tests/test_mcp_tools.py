@@ -172,7 +172,7 @@ class TestExecuteCommandTool:
             "serverName": "production_server",
         }
 
-        result = await execute_command_func("pwd", serverName="production_server")
+        await execute_command_func("pwd", serverName="production_server")
 
         call_args = mock_ssh_manager.execute_command.call_args[0][0]
         assert call_args.cmdString == "pwd"
@@ -189,7 +189,7 @@ class TestExecuteCommandTool:
             "serverName": "test_server",
         }
 
-        result = await execute_command_func("sleep 5", timeout=60)
+        await execute_command_func("sleep 5", timeout=60)
 
         call_args = mock_ssh_manager.execute_command.call_args[0][0]
         assert call_args.timeout == 60
@@ -284,7 +284,7 @@ class TestUploadTool:
             "remotePath": "/remote/config.json",
         }
 
-        result = await upload_func(
+        await upload_func(
             "/local/config.json", "/remote/config.json", serverName="staging_server"
         )
 
@@ -372,7 +372,7 @@ class TestDownloadTool:
             "localPath": "/local/logs/app.log",
         }
 
-        result = await download_func(
+        await download_func(
             "/logs/app.log", "/local/logs/app.log", serverName="production_server"
         )
 
