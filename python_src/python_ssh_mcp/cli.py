@@ -55,7 +55,7 @@ class CLIParser:
     - Single connection via individual parameters
     - Legacy positional arguments
     - Command whitelist/blacklist configuration
-    - Tools version selection (v1/v2/auto)
+    - Unified SSH MCP tools implementation
     """
 
     @staticmethod
@@ -222,31 +222,6 @@ class CLIParser:
             command_blacklist=blacklist_patterns,
         )
 
-    @staticmethod
-    def validate_tools_version(tools_version: str) -> str:
-        """
-        Validate and normalize tools version parameter.
-
-        Args:
-            tools_version: Version string ('v1', 'v2', 'auto')
-
-        Returns:
-            Normalized version string
-
-        Raises:
-            ValueError: If version is invalid
-        """
-        valid_versions = {"v1", "v2", "auto"}
-        normalized = tools_version.lower().strip()
-
-        if normalized not in valid_versions:
-            raise ValueError(
-                f"Invalid tools version '{tools_version}'. "
-                f"Must be one of: {', '.join(sorted(valid_versions))}"
-            )
-
-        return normalized
-
 
 @app.command()
 def main(
@@ -300,14 +275,6 @@ def main(
             "--blacklist", "-B", help="Command blacklist patterns (comma-separated)"
         ),
     ] = None,
-    tools_version: Annotated[
-        str,
-        typer.Option(
-            "--tools-version",
-            "-v",
-            help="Choose MCP tools implementation: 'v1' (stable), 'v2' (enhanced), 'auto' (environment-based)",
-        ),
-    ] = "v1",
     positionals: Annotated[
         list[str] | None,
         typer.Argument(help="Positional arguments: host port username password"),
@@ -333,20 +300,13 @@ def main(
         --host 1.2.3.4 --port 22 --username alice --password xxx
         Or: python main.py 1.2.3.4 22 alice xxx
 
-    Tools version selection:
-        --tools-version v1    # Use stable v1 implementation (default)
-        --tools-version v2    # Use enhanced v2 implementation with Context support
-        --tools-version auto  # Auto-detect based on SSH_MCP_TOOLS_VERSION environment variable
-
-    Environment variable support:
-        export SSH_MCP_TOOLS_VERSION=v2  # Force v2 when using --tools-version auto
+    The server uses the unified SSH MCP tools implementation with enhanced
+    features including FastMCP best practices, Context support, and improved
+    error handling.
     """
     import asyncio
 
     try:
-        # Validate tools version
-        normalized_version = CLIParser.validate_tools_version(tools_version)
-
         config_map = parse_cli_args(
             tuple(ssh) if ssh else (),
             host,
@@ -363,8 +323,8 @@ def main(
         # Import the server startup function
         from .main import start_server_with_config
 
-        # Start the server with tools version selection
-        asyncio.run(start_server_with_config(config_map, normalized_version))
+        # Start the server
+        asyncio.run(start_server_with_config(config_map))
 
     except Exception as e:
         typer.echo(f"❌ Error: {e}", err=True)

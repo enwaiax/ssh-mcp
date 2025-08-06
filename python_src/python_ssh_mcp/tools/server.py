@@ -157,7 +157,7 @@ class OptimizedSSHMCPServer:
         return {
             "name": self.mcp.name,
             "version": "2.0.0",
-            "tools_version": "v2" if self._use_v2_tools else "v1",
+            "tools_version": "unified",
             "initialized": self._is_initialized,
             "ssh_manager_active": self._ssh_manager is not None,
             "tool_count": len(self.mcp._tools) if hasattr(self.mcp, "_tools") else 0,

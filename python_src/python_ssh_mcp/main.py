@@ -46,7 +46,7 @@ def display_startup_banner(server_count: int) -> None:
     print()
 
 
-async def start_server_with_config(ssh_configs, tools_version: str = "v2"):
+async def start_server_with_config(ssh_configs):
     """
     Start the SSH MCP server with the given configuration.
 
@@ -54,7 +54,6 @@ async def start_server_with_config(ssh_configs, tools_version: str = "v2"):
 
     Args:
         ssh_configs: SSH connection configuration map
-        tools_version: Tools implementation version (always 'v2' now)
     """
     ssh_server = None
 
@@ -69,11 +68,11 @@ async def start_server_with_config(ssh_configs, tools_version: str = "v2"):
         # Display startup information
         display_startup_banner(len(ssh_configs))
 
-        # Create SSH MCP server (unified v2 implementation)
+        # Create SSH MCP server (unified implementation)
         server_name = "fastmcp-ssh-server"
         ssh_server = SSHMCPServer(server_name)
-        Logger.info("SSH MCP Server (v2) instance created", {"version": "v2"})
-        print("🚀 Using unified v2 tools implementation")
+        Logger.info("SSH MCP Server instance created")
+        print("🚀 Using unified SSH MCP tools implementation")
 
         # Initialize server with SSH configurations
         print("🔌 Initializing SSH connections...")
