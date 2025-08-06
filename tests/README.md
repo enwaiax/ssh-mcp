@@ -83,7 +83,7 @@ pytest
 pytest tests/test_ssh_manager.py
 
 # Run with coverage
-pytest --cov=python_src/python_ssh_mcp --cov-report=html
+pytest --cov=src/python_ssh_mcp --cov-report=html
 
 # Run specific test class
 pytest tests/test_ssh_manager.py::TestSSHConnectionManager
@@ -116,7 +116,7 @@ python tests/run_tests.py --coverage
 open htmlcov/index.html
 
 # Generate terminal coverage report
-pytest --cov=python_src/python_ssh_mcp --cov-report=term-missing
+pytest --cov=src/python_ssh_mcp --cov-report=term-missing
 ```
 
 ## 🧪 Test Descriptions
@@ -239,7 +239,7 @@ pytest --tb=long tests/test_ssh_manager.py
    - Check that mock return values match expected types
 
 3. **Import Errors**
-   - Ensure `python_src` is in Python path
+   - Ensure `src` is in Python path
    - Check that all required dependencies are installed
 
 ## 📈 Performance Benchmarks
@@ -336,10 +336,10 @@ In addition to tests, the suite includes code quality verification:
 python tests/run_tests.py --lint
 
 # Or run individually
-ruff check python_src/
-mypy python_src/
-black --check python_src/
-isort --check-only python_src/
+ruff check src/
+mypy src/
+black --check src/
+isort --check-only src/
 ```
 
 ## 📞 Support

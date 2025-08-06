@@ -26,7 +26,7 @@ The project uses automated GitHub Actions workflows to:
 Before releasing, ensure:
 - [ ] All tests pass locally: `uv run pytest`
 - [ ] Code quality checks pass: `uv run ruff check` and `uv run ruff format --check`
-- [ ] Type checking passes: `uv run mypy python_src/`
+- [ ] Type checking passes: `uv run mypy src/`
 - [ ] Documentation is up to date
 - [ ] CHANGELOG.md is updated with new features/fixes
 - [ ] Version number is bumped in `pyproject.toml`
@@ -201,7 +201,7 @@ uv run python -c "import importlib.metadata; print(importlib.metadata.metadata('
 uv run python -m tarfile -l dist/*.tar.gz
 
 # Test import locally
-uv run python -c "from python_ssh_mcp import cli; print('Import successful')"
+uv run python -c "from ssh_mcp import cli; print('Import successful')"
 ```
 
 ## 🔐 Security Considerations

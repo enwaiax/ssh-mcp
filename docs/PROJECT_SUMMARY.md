@@ -106,8 +106,8 @@ Transform SSH MCP Tools from v1 implementation to v2 best practices while mainta
 - 100% API compatibility maintained
 
 **Key Deliverables**:
-- `python_src/python_ssh_mcp/tools/v2/ssh_tools.py` - Modern tool implementations
-- `python_src/python_ssh_mcp/tools/v2/__init__.py` - Clean module interface
+- `src/python_ssh_mcp/tools/v2/ssh_tools.py` - Modern tool implementations
+- `src/python_ssh_mcp/tools/v2/__init__.py` - Clean module interface
 - Comprehensive tool testing and verification
 
 ### Task 2: 实现服务器集成和初始化 ✅
@@ -122,7 +122,7 @@ Transform SSH MCP Tools from v1 implementation to v2 best practices while mainta
 - Comprehensive server lifecycle management
 
 **Key Deliverables**:
-- `python_src/python_ssh_mcp/tools/v2/server.py` - Enhanced server implementation
+- `src/python_ssh_mcp/tools/v2/server.py` - Enhanced server implementation
 - Multiple initialization patterns (initialize_with_tools, create_v2_server)
 - Server integration testing and validation
 
@@ -155,8 +155,8 @@ Transform SSH MCP Tools from v1 implementation to v2 best practices while mainta
 - Updated help documentation and examples
 
 **Key Deliverables**:
-- Enhanced `python_src/python_ssh_mcp/cli.py` with version selection
-- Updated `python_src/python_ssh_mcp/main.py` with server selection logic
+- Enhanced `src/python_ssh_mcp/cli.py` with version selection
+- Updated `src/python_ssh_mcp/main.py` with server selection logic
 - CLI testing and validation
 - Updated README documentation
 

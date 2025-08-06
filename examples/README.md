@@ -166,7 +166,7 @@ source .env && ./examples/security/restrictive_security.sh
 
 ```bash
 # Set Python path
-export PYTHONPATH=python_src
+export PYTHONPATH=src
 
 # Run Python example
 python examples/mcp_clients/python_client.py
@@ -227,11 +227,11 @@ import os
 import sys
 from pathlib import Path
 
-# Add python_src to path
-sys.path.insert(0, str(Path(__file__).parent.parent / "python_src"))
+# Add src to path
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from python_ssh_mcp.server import SSHMCPServer
-from python_ssh_mcp.models import SSHConfig
+from ssh_mcp.server import SSHMCPServer
+from ssh_mcp.models import SSHConfig
 
 async def main():
     """Main example function."""

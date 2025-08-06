@@ -29,9 +29,9 @@ import pytest
 # Add the python_src directory to Python path for testing
 sys.path.insert(0, str(Path(__file__).parent.parent / "python_src"))
 
-from python_ssh_mcp.cli import CLIParser, parse_cli_args
-from python_ssh_mcp.models import SSHConfig
-from python_ssh_mcp.utils import ConfigurationError
+from ssh_mcp.cli import CLIParser, parse_cli_args
+from ssh_mcp.models import SSHConfig
+from ssh_mcp.utils import ConfigurationError
 
 
 class TestSSHConnectionStringParsing:

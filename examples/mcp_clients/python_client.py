@@ -28,10 +28,10 @@ import sys
 import tempfile
 from pathlib import Path
 
-# Add python_src to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "python_src"))
+# Add src to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from python_ssh_mcp.utils import Logger, setup_logger
+from ssh_mcp.utils import Logger, setup_logger
 
 
 class MockMCPClient:

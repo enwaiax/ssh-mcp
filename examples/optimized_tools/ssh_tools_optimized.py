@@ -301,10 +301,10 @@ async def initialize_server(ssh_configs):
     import sys
     from pathlib import Path
 
-    # Add python_src to path for imports
-    sys.path.insert(0, str(Path(__file__).parent.parent.parent / "python_src"))
+    # Add src to path for imports
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-    from python_ssh_mcp.ssh_manager import SSHConnectionManager
+    from ssh_mcp.ssh_manager import SSHConnectionManager
 
     # 初始化SSH管理器
     ssh_manager = await SSHConnectionManager.get_instance()

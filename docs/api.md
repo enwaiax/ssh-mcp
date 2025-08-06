@@ -449,9 +449,9 @@ asyncio.run(check_servers())
 
 ```bash
 # Set log level to debug
-export PYTHONPATH=python_src
+export PYTHONPATH=src
 python -c "
-from python_ssh_mcp.utils import setup_logger
+from ssh_mcp.utils import setup_logger
 setup_logger(level='debug', enable_console=True)
 "
 ```
@@ -472,7 +472,7 @@ import logging
 logging.getLogger('asyncssh').setLevel(logging.DEBUG)
 
 # Custom error handler
-from python_ssh_mcp.utils import Logger
+from ssh_mcp.utils import Logger
 
 def debug_tool_call(tool_name, **kwargs):
     Logger.debug(f"Calling tool: {tool_name}", kwargs)

@@ -45,7 +45,7 @@ dependencies = [
 ]
 
 [project.scripts]
-fastmcp-ssh-server = "python_ssh_mcp.main:main"
+fastmcp-ssh-server = "ssh_mcp.main:main"
 
 [project.optional-dependencies]
 dev = [
@@ -72,11 +72,11 @@ Repository = "https://github.com/your-username/fastmcp-ssh-server.git"
 Issues = "https://github.com/your-username/fastmcp-ssh-server/issues"
 
 [tool.hatch.build.targets.wheel]
-packages = ["python_src/python_ssh_mcp"]
+packages = ["src/ssh_mcp"]
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/python_src",
+    "/src",
     "/tests",
     "/README_PYTHON.md",
     "/LICENSE",
@@ -105,7 +105,7 @@ extend-exclude = '''
 profile = "black"
 multi_line_output = 3
 line_length = 88
-known_first_party = ["python_ssh_mcp"]
+known_first_party = ["ssh_mcp"]
 
 [tool.mypy]
 python_version = "3.12"
@@ -159,7 +159,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["python_ssh_mcp"]
+source = ["ssh_mcp"]
 omit = ["*/tests/*", "*/test_*.py", "*/__pycache__/*"]
 
 [tool.coverage.report]

@@ -297,8 +297,8 @@ RuntimeError: SSH manager not initialized
 1. **Ensure proper initialization**
    ```python
    # In Python code
-   from python_ssh_mcp.ssh_manager import SSHConnectionManager
-   from python_ssh_mcp.models import SSHConfig
+   from ssh_mcp.ssh_manager import SSHConnectionManager
+   from ssh_mcp.models import SSHConfig
 
    # Create configuration
    config = SSHConfig(
@@ -330,11 +330,11 @@ RuntimeError: SSH manager not initialized
 
 ```bash
 # Set environment variable
-export PYTHONPATH=python_src
+export PYTHONPATH=src
 
 # Run with debug logging
 python -c "
-from python_ssh_mcp.utils import setup_logger, Logger
+from ssh_mcp.utils import setup_logger, Logger
 setup_logger(level='debug', enable_console=True)
 Logger.debug('Debug mode enabled')
 "
@@ -348,7 +348,7 @@ import logging
 logging.getLogger('asyncssh').setLevel(logging.DEBUG)
 
 # Custom debug wrapper
-from python_ssh_mcp.utils import Logger
+from ssh_mcp.utils import Logger
 
 async def debug_command(manager, command, server="default"):
     Logger.debug(f"Executing command: {command}", {"server": server})
@@ -422,9 +422,9 @@ async def run_diagnostics():
     print("\n4. FastMCP SSH Server Check:")
     try:
         # Try to import main modules
-        from python_ssh_mcp.ssh_manager import SSHConnectionManager
-        from python_ssh_mcp.models import SSHConfig
-        from python_ssh_mcp.server import SSHMCPServer
+        from ssh_mcp.ssh_manager import SSHConnectionManager
+        from ssh_mcp.models import SSHConfig
+        from ssh_mcp.server import SSHMCPServer
 
         print("   ✅ Core modules import successfully")
 

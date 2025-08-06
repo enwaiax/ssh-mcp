@@ -326,17 +326,17 @@ python tests/run_tests.py --coverage
 python tests/run_tests.py --lint
 
 # Or run tools individually
-ruff check python_src/
-black python_src/
-isort python_src/
-mypy python_src/
+ruff check src/
+black src/
+isort src/
+mypy src/
 ```
 
 ### Project Structure
 
 ```
 fastmcp-ssh-server/
-├── python_src/
+├── src/
 │   └── python_ssh_mcp/
 │       ├── __init__.py          # Package initialization
 │       ├── __main__.py          # Module entry point

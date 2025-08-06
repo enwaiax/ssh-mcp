@@ -212,7 +212,7 @@ uv run python -c "import python_ssh_mcp; print('Import successful')"
 
 - [ ] All tests pass locally: `uv run pytest`
 - [ ] Code quality checks pass: `uv run ruff check`
-- [ ] Type checking passes: `uv run mypy python_src/`
+- [ ] Type checking passes: `uv run mypy src/`
 - [ ] Documentation is updated
 - [ ] `CHANGELOG.md` is updated
 - [ ] Version bumped in `pyproject.toml`

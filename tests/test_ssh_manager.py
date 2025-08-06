@@ -28,14 +28,14 @@ import pytest
 # Add the python_src directory to Python path for testing
 sys.path.insert(0, str(Path(__file__).parent.parent / "python_src"))
 
-from python_ssh_mcp.models import (
+from ssh_mcp.models import (
     DownloadParams,
     ExecuteCommandParams,
     SSHConfig,
     UploadParams,
 )
-from python_ssh_mcp.ssh_manager import SSHConnectionManager
-from python_ssh_mcp.utils import (
+from ssh_mcp.ssh_manager import SSHConnectionManager
+from ssh_mcp.utils import (
     SFTPError,
     SSHCommandError,
     SSHConnectionError,

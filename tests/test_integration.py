@@ -29,10 +29,10 @@ import pytest
 # Add the python_src directory to Python path for testing
 sys.path.insert(0, str(Path(__file__).parent.parent / "python_src"))
 
-from python_ssh_mcp import SSHMCPServer
-from python_ssh_mcp.cli import parse_cli_args
-from python_ssh_mcp.models import SSHConfig
-from python_ssh_mcp.utils import Logger, setup_logger
+from ssh_mcp import SSHMCPServer
+from ssh_mcp.cli import parse_cli_args
+from ssh_mcp.models import SSHConfig
+from ssh_mcp.utils import Logger, setup_logger
 
 
 class TestFullServerIntegration:
@@ -212,7 +212,7 @@ class TestMCPToolsIntegration:
         mock_connection.run.return_value = mock_result
 
         # Test command execution through the full stack
-        from python_ssh_mcp.models import ExecuteCommandParams
+        from ssh_mcp.models import ExecuteCommandParams
 
         params = ExecuteCommandParams(
             cmd_string="echo 'integration test'", serverName="tool_test_server"
@@ -239,7 +239,7 @@ class TestMCPToolsIntegration:
             tmp_file.write("integration test content")
             tmp_file.flush()
 
-            from python_ssh_mcp.models import UploadParams
+            from ssh_mcp.models import UploadParams
 
             upload_params = UploadParams(
                 localPath=tmp_file.name,
@@ -260,8 +260,8 @@ class TestMCPToolsIntegration:
         server, mock_connection = server_with_mocked_ssh
 
         # Test denied command
-        from python_ssh_mcp.models import ExecuteCommandParams
-        from python_ssh_mcp.utils import SSHCommandError
+        from ssh_mcp.models import ExecuteCommandParams
+        from ssh_mcp.utils import SSHCommandError
 
         params = ExecuteCommandParams(
             cmd_string="rm -rf /important/data", serverName="tool_test_server"
@@ -315,7 +315,7 @@ class TestLoggingIntegration:
 
     async def test_error_handling_with_logging_integration(self):
         """Test error handling with logging integration."""
-        from python_ssh_mcp.utils import ErrorHandler, SSHConnectionError
+        from ssh_mcp.utils import ErrorHandler, SSHConnectionError
 
         # Create test error
         test_error = SSHConnectionError("Integration test connection error")
@@ -357,7 +357,7 @@ class TestPerformanceIntegration:
             await server.initialize([ssh_config])
 
             # Execute multiple commands concurrently
-            from python_ssh_mcp.models import ExecuteCommandParams
+            from ssh_mcp.models import ExecuteCommandParams
 
             async def execute_test_command(cmd_id: int):
                 params = ExecuteCommandParams(
@@ -402,7 +402,7 @@ class TestPerformanceIntegration:
             await server.initialize([ssh_config])
 
             # Execute multiple commands on same server
-            from python_ssh_mcp.models import ExecuteCommandParams
+            from ssh_mcp.models import ExecuteCommandParams
 
             for i in range(5):
                 params = ExecuteCommandParams(
@@ -545,7 +545,7 @@ class TestErrorRecoveryIntegration:
             mock_connection.run.return_value = mock_result
 
             # Command execution should still work
-            from python_ssh_mcp.models import ExecuteCommandParams
+            from ssh_mcp.models import ExecuteCommandParams
 
             params = ExecuteCommandParams(
                 cmd_string="echo 'test'", serverName="degradation_test"
@@ -555,7 +555,7 @@ class TestErrorRecoveryIntegration:
             assert result["exitCode"] == 0
 
             # But file operations should fail gracefully
-            from python_ssh_mcp.models import UploadParams
+            from ssh_mcp.models import UploadParams
 
             upload_params = UploadParams(
                 localPath="/local/file.txt",

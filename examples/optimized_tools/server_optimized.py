@@ -10,10 +10,10 @@ from pathlib import Path
 
 from ssh_tools_optimized import initialize_server
 
-# Add python_src to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "python_src"))
+# Add src to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from python_ssh_mcp.models import SSHConfig
+from ssh_mcp.models import SSHConfig
 
 
 async def main():

@@ -28,15 +28,15 @@ import pytest
 # Add the python_src directory to Python path for testing
 sys.path.insert(0, str(Path(__file__).parent.parent / "python_src"))
 
-from python_ssh_mcp import SSHMCPServer
-from python_ssh_mcp.models import (
+from ssh_mcp import SSHMCPServer
+from ssh_mcp.models import (
     DownloadParams,
     ExecuteCommandParams,
     SSHConfig,
     UploadParams,
 )
-from python_ssh_mcp.tools import initialize_server, mcp
-from python_ssh_mcp.utils import SFTPError, SSHCommandError, SSHConnectionError
+from ssh_mcp.tools import initialize_server, mcp
+from ssh_mcp.utils import SFTPError, SSHCommandError, SSHConnectionError
 
 
 class TestMCPToolRegistration:
@@ -89,7 +89,7 @@ class TestExecuteCommandTool:
     def execute_command_func(self, mock_ssh_manager):
         """Create execute command function for testing."""
         # Import the actual tool implementation
-        from python_ssh_mcp.tools.execute_command import register_execute_command_tool
+        from ssh_mcp.tools.execute_command import register_execute_command_tool
 
         # Mock MCP server to capture the registered function
         mock_mcp_server = MagicMock()
@@ -208,7 +208,7 @@ class TestUploadTool:
     @pytest.fixture
     def upload_func(self, mock_ssh_manager):
         """Create upload function for testing."""
-        from python_ssh_mcp.tools.upload import register_upload_tool
+        from ssh_mcp.tools.upload import register_upload_tool
 
         mock_mcp_server = MagicMock()
         registered_func = None
@@ -296,7 +296,7 @@ class TestDownloadTool:
     @pytest.fixture
     def download_func(self, mock_ssh_manager):
         """Create download function for testing."""
-        from python_ssh_mcp.tools.download import register_download_tool
+        from ssh_mcp.tools.download import register_download_tool
 
         mock_mcp_server = MagicMock()
         registered_func = None
@@ -386,7 +386,7 @@ class TestListServersTool:
     @pytest.fixture
     def list_servers_func(self, mock_ssh_manager):
         """Create list servers function for testing."""
-        from python_ssh_mcp.tools.list_servers import register_list_servers_tool
+        from ssh_mcp.tools.list_servers import register_list_servers_tool
 
         mock_mcp_server = MagicMock()
         registered_func = None
@@ -524,7 +524,7 @@ class TestMCPToolIntegration:
     async def test_tool_error_response_format(self):
         """Test that all tools return consistent error response format."""
         # This tests the error handler utility function used by all tools
-        from python_ssh_mcp.utils import ErrorHandler
+        from ssh_mcp.utils import ErrorHandler
 
         test_error = Exception("Test error message")
         error_response = ErrorHandler.log_and_return_error(
