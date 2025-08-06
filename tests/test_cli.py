@@ -29,7 +29,7 @@ import pytest
 # Add the python_src directory to Python path for testing
 sys.path.insert(0, str(Path(__file__).parent.parent / "python_src"))
 
-from python_ssh_mcp.cli import parse_cli_args, parse_ssh_connection_string
+from python_ssh_mcp.cli import CLIParser, parse_cli_args
 from python_ssh_mcp.models import SSHConfig
 from python_ssh_mcp.utils import ConfigurationError
 
@@ -40,7 +40,7 @@ class TestSSHConnectionStringParsing:
     def test_parse_basic_connection_string(self):
         """Test parsing basic SSH connection string."""
         conn_str = "user@host"
-        result = parse_ssh_connection_string(conn_str)
+        result = CLIParser.parse_ssh_string(conn_str)
 
         assert result["username"] == "user"
         assert result["host"] == "host"
@@ -49,7 +49,7 @@ class TestSSHConnectionStringParsing:
     def test_parse_connection_string_with_port(self):
         """Test parsing SSH connection string with port."""
         conn_str = "user@host:2222"
-        result = parse_ssh_connection_string(conn_str)
+        result = CLIParser.parse_ssh_string(conn_str)
 
         assert result["username"] == "user"
         assert result["host"] == "host"
@@ -58,7 +58,7 @@ class TestSSHConnectionStringParsing:
     def test_parse_connection_string_host_only(self):
         """Test parsing SSH connection string with host only."""
         conn_str = "example.com"
-        result = parse_ssh_connection_string(conn_str)
+        result = CLIParser.parse_ssh_string(conn_str)
 
         assert result["username"] is None
         assert result["host"] == "example.com"
@@ -67,7 +67,7 @@ class TestSSHConnectionStringParsing:
     def test_parse_connection_string_host_with_port(self):
         """Test parsing host with port but no username."""
         conn_str = "example.com:2222"
-        result = parse_ssh_connection_string(conn_str)
+        result = CLIParser.parse_ssh_string(conn_str)
 
         assert result["username"] is None
         assert result["host"] == "example.com"
@@ -76,7 +76,7 @@ class TestSSHConnectionStringParsing:
     def test_parse_connection_string_ipv4(self):
         """Test parsing IPv4 address."""
         conn_str = "deploy@192.168.1.100:22"
-        result = parse_ssh_connection_string(conn_str)
+        result = CLIParser.parse_ssh_string(conn_str)
 
         assert result["username"] == "deploy"
         assert result["host"] == "192.168.1.100"
@@ -85,7 +85,7 @@ class TestSSHConnectionStringParsing:
     def test_parse_connection_string_ipv6(self):
         """Test parsing IPv6 address."""
         conn_str = "user@[2001:db8::1]:22"
-        result = parse_ssh_connection_string(conn_str)
+        result = CLIParser.parse_ssh_string(conn_str)
 
         assert result["username"] == "user"
         assert result["host"] == "[2001:db8::1]"
@@ -94,18 +94,18 @@ class TestSSHConnectionStringParsing:
     def test_parse_invalid_connection_string(self):
         """Test parsing invalid connection string."""
         with pytest.raises(ConfigurationError, match="Invalid SSH connection format"):
-            parse_ssh_connection_string("")
+            CLIParser.parse_ssh_string("")
 
         with pytest.raises(ConfigurationError, match="Invalid SSH connection format"):
-            parse_ssh_connection_string("   ")
+            CLIParser.parse_ssh_string("   ")
 
     def test_parse_connection_string_invalid_port(self):
         """Test parsing connection string with invalid port."""
         with pytest.raises(ConfigurationError, match="Invalid port number"):
-            parse_ssh_connection_string("user@host:abc")
+            CLIParser.parse_ssh_string("user@host:abc")
 
         with pytest.raises(ConfigurationError, match="Invalid port number"):
-            parse_ssh_connection_string("user@host:99999")
+            CLIParser.parse_ssh_string("user@host:99999")
 
 
 class TestCLIArgumentParsing:
@@ -536,11 +536,10 @@ class TestTyperIntegration:
 
         with patch("sys.argv", ["script"] + test_args):
             with pytest.raises(SystemExit) as exc_info:
-                # This might not be implemented yet, but test structure is ready
-                try:
-                    parse_cli_args()
-                except SystemExit:
-                    pass
+                parse_cli_args()
+
+            # Version should exit with code 0
+            assert exc_info.value.code == 0
 
     def test_command_completion(self):
         """Test that command completion setup works."""
