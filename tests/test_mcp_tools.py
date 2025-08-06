@@ -154,7 +154,7 @@ class TestExecuteCommandTool:
         # Verify SSH manager was called correctly
         mock_ssh_manager.execute_command.assert_called_once()
         call_args = mock_ssh_manager.execute_command.call_args[0][0]
-        assert call_args.cmdString == "echo 'Hello World'"
+        assert call_args.cmd_string == "echo 'Hello World'"
 
         # Verify result format
         assert result["stdout"] == "Hello World"
@@ -175,7 +175,7 @@ class TestExecuteCommandTool:
         await execute_command_func("pwd", serverName="production_server")
 
         call_args = mock_ssh_manager.execute_command.call_args[0][0]
-        assert call_args.cmdString == "pwd"
+        assert call_args.cmd_string == "pwd"
         assert call_args.serverName == "production_server"
 
     async def test_execute_command_with_timeout(
@@ -528,9 +528,9 @@ class TestMCPToolIntegration:
 
         # Test ExecuteCommandParams validation
         valid_params = ExecuteCommandParams(
-            cmdString="ls -la", serverName="test_server", timeout=30
+            cmd_string="ls -la", serverName="test_server", timeout=30
         )
-        assert valid_params.cmdString == "ls -la"
+        assert valid_params.cmd_string == "ls -la"
         assert valid_params.timeout == 30
 
         # Test UploadParams validation

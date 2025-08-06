@@ -148,8 +148,8 @@ class PerformanceBenchmark:
         results = {}
 
         test_cases = [
-            ("execute-command", {"cmdString": "ls -la"}),
-            ("execute-command", {"cmdString": "ps aux", "connectionName": "test1"}),
+            ("execute-command", {"cmd_string": "ls -la"}),
+            ("execute-command", {"cmd_string": "ps aux", "connectionName": "test1"}),
             (
                 "upload",
                 {"localPath": "/tmp/test.txt", "remotePath": "/home/user/test.txt"},
@@ -260,7 +260,7 @@ class PerformanceBenchmark:
                 start_time = time.perf_counter()
                 v1_tasks = [
                     v1_client.call_tool(
-                        "execute-command", {"cmdString": f"echo test_{i}"}
+                        "execute-command", {"cmd_string": f"echo test_{i}"}
                     )
                     for i in range(concurrency)
                 ]
@@ -275,7 +275,7 @@ class PerformanceBenchmark:
                 start_time = time.perf_counter()
                 v2_tasks = [
                     v2_client.call_tool(
-                        "execute-command", {"cmdString": f"echo test_{i}"}
+                        "execute-command", {"cmd_string": f"echo test_{i}"}
                     )
                     for i in range(concurrency)
                 ]

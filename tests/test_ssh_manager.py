@@ -128,14 +128,14 @@ class TestSSHConnectionManager:
         with pytest.raises(
             ValueError, match="At least one SSH configuration is required"
         ):
-            await manager.initialize([])
+            manager.set_config([])
 
     async def test_double_initialization_error(self, manager, ssh_config):
         """Test that double initialization raises error."""
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         with pytest.raises(RuntimeError, match="SSH manager is already initialized"):
-            await manager.initialize([ssh_config])
+            manager.set_config([ssh_config])
 
     @patch("python_ssh_mcp.ssh_manager.asyncssh.connect")
     async def test_get_connection_success(self, mock_connect, manager, ssh_config):
@@ -143,7 +143,7 @@ class TestSSHConnectionManager:
         mock_connection = AsyncMock()
         mock_connect.return_value = mock_connection
 
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
         connection = await manager._get_connection("test_server")
 
         assert connection == mock_connection
@@ -160,7 +160,7 @@ class TestSSHConnectionManager:
         mock_connection = AsyncMock()
         mock_connect.return_value = mock_connection
 
-        await manager.initialize([ssh_config_with_key])
+        manager.set_config([ssh_config_with_key])
         connection = await manager._get_connection("test_key_server")
 
         assert connection == mock_connection
@@ -176,7 +176,7 @@ class TestSSHConnectionManager:
         """Test SSH connection failure handling."""
         mock_connect.side_effect = Exception("Connection refused")
 
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         with pytest.raises(
             SSHConnectionError, match="Failed to connect to test_server"
@@ -185,7 +185,7 @@ class TestSSHConnectionManager:
 
     async def test_get_connection_invalid_server(self, manager, ssh_config):
         """Test getting connection for invalid server name."""
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         with pytest.raises(SSHConnectionError, match="Unknown server: invalid_server"):
             await manager._get_connection("invalid_server")
@@ -196,7 +196,7 @@ class TestSSHConnectionManager:
         mock_connection = AsyncMock()
         mock_connect.return_value = mock_connection
 
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         # First call should create connection
         connection1 = await manager._get_connection("test_server")
@@ -219,10 +219,10 @@ class TestSSHConnectionManager:
         mock_connection.run.return_value = mock_result
         mock_connect.return_value = mock_connection
 
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         params = ExecuteCommandParams(
-            cmdString="echo 'Hello World'", serverName="test_server"
+            cmd_string="echo 'Hello World'", serverName="test_server"
         )
 
         result = await manager.execute_command(params)
@@ -246,10 +246,10 @@ class TestSSHConnectionManager:
         mock_connection.run.return_value = mock_result
         mock_connect.return_value = mock_connection
 
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         params = ExecuteCommandParams(
-            cmdString="sleep 5 && echo 'Long running task completed'",
+            cmd_string="sleep 5 && echo 'Long running task completed'",
             serverName="test_server",
             timeout=60,
         )
@@ -267,10 +267,10 @@ class TestSSHConnectionManager:
         mock_connection = AsyncMock()
         mock_connect.return_value = mock_connection
 
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         params = ExecuteCommandParams(
-            cmdString="rm -rf /important/data", serverName="test_server"
+            cmd_string="rm -rf /important/data", serverName="test_server"
         )
 
         with pytest.raises(SSHCommandError, match="Command denied by security policy"):
@@ -282,10 +282,10 @@ class TestSSHConnectionManager:
         mock_connection = AsyncMock()
         mock_connect.return_value = mock_connection
 
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         params = ExecuteCommandParams(
-            cmdString="cat /etc/passwd", serverName="test_server"
+            cmd_string="cat /etc/passwd", serverName="test_server"
         )
 
         with pytest.raises(SSHCommandError, match="Command not in allowed list"):
@@ -301,7 +301,7 @@ class TestSSHConnectionManager:
         )
         mock_connect.return_value = mock_connection
 
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         with tempfile.NamedTemporaryFile(mode="w", delete=False) as tmp_file:
             tmp_file.write("Test content")
@@ -330,7 +330,7 @@ class TestSSHConnectionManager:
         mock_connection = AsyncMock()
         mock_connect.return_value = mock_connection
 
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         params = UploadParams(
             localPath="/non/existent/file.txt",
@@ -351,7 +351,7 @@ class TestSSHConnectionManager:
         )
         mock_connect.return_value = mock_connection
 
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         with tempfile.TemporaryDirectory() as tmp_dir:
             local_path = Path(tmp_dir) / "downloaded_file.txt"
@@ -381,7 +381,7 @@ class TestSSHConnectionManager:
         )
         mock_connect.return_value = mock_connection
 
-        await manager.initialize([ssh_config])
+        manager.set_config([ssh_config])
 
         params = DownloadParams(
             remotePath="/remote/path/file.txt",
@@ -395,7 +395,7 @@ class TestSSHConnectionManager:
     async def test_get_all_server_infos(self, manager, ssh_config, ssh_config_with_key):
         """Test getting all server information."""
         configs = [ssh_config, ssh_config_with_key]
-        await manager.initialize(configs)
+        manager.set_config(configs)
 
         server_infos = await manager.get_all_server_infos()
 
@@ -418,7 +418,7 @@ class TestSSHConnectionManager:
             mock_connection = AsyncMock()
             mock_connect.return_value = mock_connection
 
-            await manager.initialize([ssh_config])
+            manager.set_config([ssh_config])
             await manager._get_connection("test_server")
 
             # Ensure connection exists
@@ -432,7 +432,7 @@ class TestSSHConnectionManager:
 
     async def test_not_initialized_error(self, manager):
         """Test operations on non-initialized manager."""
-        params = ExecuteCommandParams(cmdString="echo test", serverName="test_server")
+        params = ExecuteCommandParams(cmd_string="echo test", serverName="test_server")
 
         with pytest.raises(RuntimeError, match="SSH manager not initialized"):
             await manager.execute_command(params)
@@ -442,7 +442,7 @@ class TestSecurityValidation:
     """Test suite for SSH Manager security validation."""
 
     @pytest.fixture
-    def manager_with_whitelist(self):
+    async def manager_with_whitelist(self):
         """Create SSH manager with whitelist configuration."""
         config = SSHConfig(
             name="whitelist_server",
@@ -452,13 +452,13 @@ class TestSecurityValidation:
             password="testpass",
             command_whitelist=["ls", "echo", "pwd"],
         )
-        manager = SSHConnectionManager()
+        manager = await SSHConnectionManager.get_instance()
         manager._configs = {"whitelist_server": config}
         manager._default_name = "whitelist_server"
         return manager
 
     @pytest.fixture
-    def manager_with_blacklist(self):
+    async def manager_with_blacklist(self):
         """Create SSH manager with blacklist configuration."""
         config = SSHConfig(
             name="blacklist_server",
@@ -469,56 +469,60 @@ class TestSecurityValidation:
             command_whitelist=["*"],
             command_blacklist=["rm", "sudo"],
         )
-        manager = SSHConnectionManager()
+        manager = await SSHConnectionManager.get_instance()
         manager._configs = {"blacklist_server": config}
         manager._default_name = "blacklist_server"
         return manager
 
-    def test_validate_allowed_command(self, manager_with_whitelist):
+    async def test_validate_allowed_command(self, manager_with_whitelist):
         """Test validation of allowed command."""
+        manager = await manager_with_whitelist
         # Should pass validation
-        is_allowed, reason = manager_with_whitelist.validate_command("ls -la")
+        is_allowed, reason = manager.validate_command("ls -la")
         assert is_allowed is True
         assert reason is None
 
-        is_allowed, reason = manager_with_whitelist.validate_command("echo 'hello'")
+        is_allowed, reason = manager.validate_command("echo 'hello'")
         assert is_allowed is True
         assert reason is None
 
-        is_allowed, reason = manager_with_whitelist.validate_command("pwd")
+        is_allowed, reason = manager.validate_command("pwd")
         assert is_allowed is True
         assert reason is None
 
-    def test_validate_denied_command(self, manager_with_blacklist):
+    async def test_validate_denied_command(self, manager_with_blacklist):
         """Test validation of denied command."""
-        is_allowed, reason = manager_with_blacklist.validate_command("rm -rf /")
+        manager = await manager_with_blacklist
+        is_allowed, reason = manager.validate_command("rm -rf /")
         assert is_allowed is False
         assert "blacklist" in reason.lower()
 
-        is_allowed, reason = manager_with_blacklist.validate_command("sudo rm file")
+        is_allowed, reason = manager.validate_command("sudo rm file")
         assert is_allowed is False
         assert "blacklist" in reason.lower()
 
-    def test_validate_command_not_in_whitelist(self, manager_with_whitelist):
+    async def test_validate_command_not_in_whitelist(self, manager_with_whitelist):
         """Test validation of command not in whitelist."""
-        is_allowed, reason = manager_with_whitelist.validate_command("cat /etc/passwd")
+        manager = await manager_with_whitelist
+        is_allowed, reason = manager.validate_command("cat /etc/passwd")
         assert is_allowed is False
         assert "whitelist" in reason.lower()
 
-    def test_wildcard_whitelist_commands(self, manager_with_blacklist):
+    async def test_wildcard_whitelist_commands(self, manager_with_blacklist):
         """Test wildcard in whitelist commands."""
+        manager = await manager_with_blacklist
         # Should allow any command except denied ones
-        is_allowed, reason = manager_with_blacklist.validate_command("ls -la")
+        is_allowed, reason = manager.validate_command("ls -la")
         assert is_allowed is True
 
-        is_allowed, reason = manager_with_blacklist.validate_command("cat file.txt")
+        is_allowed, reason = manager.validate_command("cat file.txt")
         assert is_allowed is True
 
-        is_allowed, reason = manager_with_blacklist.validate_command("echo 'test'")
+        is_allowed, reason = manager.validate_command("echo 'test'")
         assert is_allowed is True
 
         # But should deny explicitly denied commands
-        is_allowed, reason = manager_with_blacklist.validate_command("rm file.txt")
+        is_allowed, reason = manager.validate_command("rm file.txt")
         assert is_allowed is False
 
 

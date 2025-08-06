@@ -239,10 +239,10 @@ class TestToolsComparison:
     async def test_execute_command_compatibility(self, v1_server, v2_server):
         """Test execute-command tool compatibility."""
         test_cases = [
-            {"cmdString": "ls -la", "connectionName": None},
-            {"cmdString": "ps aux", "connectionName": "test1"},
-            {"cmdString": "echo 'hello world'", "connectionName": "test2"},
-            {"cmdString": "pwd", "connectionName": "default"},
+            {"cmd_string": "ls -la", "connectionName": None},
+            {"cmd_string": "ps aux", "connectionName": "test1"},
+            {"cmd_string": "echo 'hello world'", "connectionName": "test2"},
+            {"cmd_string": "pwd", "connectionName": "default"},
         ]
 
         async with self.get_clients(v1_server, v2_server) as (v1_client, v2_client):
@@ -364,7 +364,7 @@ class TestToolsComparison:
         """Test that error handling is consistent between v1 and v2."""
         # Test invalid tool calls
         error_test_cases = [
-            ("execute-command", {"cmdString": "", "connectionName": "nonexistent"}),
+            ("execute-command", {"cmd_string": "", "connectionName": "nonexistent"}),
             (
                 "upload",
                 {"localPath": "", "remotePath": "/tmp/test", "connectionName": None},
@@ -411,7 +411,7 @@ class TestToolsComparison:
             for _ in range(iterations):
                 start_time = time.time()
                 await v1_client.call_tool(
-                    "execute-command", {"cmdString": test_command}
+                    "execute-command", {"cmd_string": test_command}
                 )
                 v1_times.append(time.time() - start_time)
 
@@ -420,7 +420,7 @@ class TestToolsComparison:
             for _ in range(iterations):
                 start_time = time.time()
                 await v2_client.call_tool(
-                    "execute-command", {"cmdString": test_command}
+                    "execute-command", {"cmd_string": test_command}
                 )
                 v2_times.append(time.time() - start_time)
 
@@ -463,8 +463,8 @@ class TestToolsComparison:
                     # Verify required parameters are documented
                     properties = schema["properties"]
                     if tool.name == "execute-command":
-                        assert "cmdString" in properties, (
-                            "execute-command missing cmdString parameter"
+                        assert "cmd_string" in properties, (
+                            "execute-command missing cmd_string parameter"
                         )
                     elif tool.name in ["upload", "download"]:
                         assert any(
@@ -492,8 +492,8 @@ class TestToolsComparison:
         """Test complete workflow compatibility between v1 and v2."""
         workflow_steps = [
             ("list-servers", {}),
-            ("execute-command", {"cmdString": "whoami"}),
-            ("execute-command", {"cmdString": "pwd", "connectionName": "test1"}),
+            ("execute-command", {"cmd_string": "whoami"}),
+            ("execute-command", {"cmd_string": "pwd", "connectionName": "test1"}),
             (
                 "upload",
                 {"localPath": "/tmp/test.txt", "remotePath": "/tmp/uploaded.txt"},

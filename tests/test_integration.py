@@ -215,7 +215,7 @@ class TestMCPToolsIntegration:
         from python_ssh_mcp.models import ExecuteCommandParams
 
         params = ExecuteCommandParams(
-            cmdString="echo 'integration test'", serverName="tool_test_server"
+            cmd_string="echo 'integration test'", serverName="tool_test_server"
         )
 
         result = await server.ssh_manager.execute_command(params)
@@ -264,7 +264,7 @@ class TestMCPToolsIntegration:
         from python_ssh_mcp.utils import SSHCommandError
 
         params = ExecuteCommandParams(
-            cmdString="rm -rf /important/data", serverName="tool_test_server"
+            cmd_string="rm -rf /important/data", serverName="tool_test_server"
         )
 
         with pytest.raises(SSHCommandError, match="Command denied by security policy"):
@@ -361,7 +361,7 @@ class TestPerformanceIntegration:
 
             async def execute_test_command(cmd_id: int):
                 params = ExecuteCommandParams(
-                    cmdString=f"echo 'command {cmd_id}'", serverName="performance_test"
+                    cmd_string=f"echo 'command {cmd_id}'", serverName="performance_test"
                 )
                 return await server.ssh_manager.execute_command(params)
 
@@ -406,7 +406,7 @@ class TestPerformanceIntegration:
 
             for i in range(5):
                 params = ExecuteCommandParams(
-                    cmdString=f"echo 'reuse test {i}'", serverName="reuse_test"
+                    cmd_string=f"echo 'reuse test {i}'", serverName="reuse_test"
                 )
                 await server.ssh_manager.execute_command(params)
 
@@ -548,7 +548,7 @@ class TestErrorRecoveryIntegration:
             from python_ssh_mcp.models import ExecuteCommandParams
 
             params = ExecuteCommandParams(
-                cmdString="echo 'test'", serverName="degradation_test"
+                cmd_string="echo 'test'", serverName="degradation_test"
             )
 
             result = await server.ssh_manager.execute_command(params)
