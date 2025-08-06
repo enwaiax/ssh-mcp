@@ -4,7 +4,7 @@
 #   Timestamp: "2025-08-05T20:12:54+08:00"
 #   Authoring_Role: "LD"
 #   Principle_Applied: "SOLID-S (单一职责原则) + 高内聚低耦合"
-#   Quality_Check: "完整集成SSHMCPServer，CLI解析，MCP工具注册，服务器启动，优雅错误处理"
+#   Quality_Check: "完整集成v2 SSHMCPServer，CLI解析，MCP工具注册，服务器启动，优雅错误处理"
 # }}
 # {{START_MODIFICATIONS}}
 #!/usr/bin/env python3
@@ -22,7 +22,7 @@ from typing import NoReturn
 
 from . import __version__
 from .cli import app as cli_app
-from .server import SSHMCPServer
+from .tools.v2.server import OptimizedSSHMCPServer as SSHMCPServer
 from .utils import Logger, setup_logger
 
 
@@ -47,7 +47,7 @@ def display_startup_banner(server_count: int) -> None:
     print()
 
 
-async def start_server_with_config(ssh_configs, tools_version: str = "v1"):
+async def start_server_with_config(ssh_configs, tools_version: str = "v2"):
     """
     Start the SSH MCP server with the given configuration.
 
@@ -55,7 +55,7 @@ async def start_server_with_config(ssh_configs, tools_version: str = "v1"):
 
     Args:
         ssh_configs: SSH connection configuration map
-        tools_version: Tools implementation version ('v1', 'v2', 'auto')
+        tools_version: Tools implementation version (always 'v2' now)
     """
     ssh_server = None
 
@@ -70,31 +70,11 @@ async def start_server_with_config(ssh_configs, tools_version: str = "v1"):
         # Display startup information
         display_startup_banner(len(ssh_configs))
 
-        # Determine which server implementation to use
+        # Create SSH MCP server (unified v2 implementation)
         server_name = "fastmcp-ssh-server"
-
-        if tools_version == "auto":
-            # Check environment variable for version
-            import os
-
-            env_version = os.getenv("SSH_MCP_TOOLS_VERSION", "v1").lower()
-            actual_version = "v2" if env_version in ("v2", "2", "true", "yes") else "v1"
-        else:
-            actual_version = tools_version
-
-        # Create SSH MCP server based on version
-        if actual_version == "v2":
-            from .tools.v2.server import OptimizedSSHMCPServer
-
-            ssh_server = OptimizedSSHMCPServer(server_name, use_v2_tools=True)
-            Logger.info(
-                "OptimizedSSHMCPServer (v2) instance created", {"version": "v2"}
-            )
-            print("🚀 Using enhanced v2 tools implementation")
-        else:
-            ssh_server = SSHMCPServer(server_name)
-            Logger.info("SSHMCPServer (v1) instance created", {"version": "v1"})
-            print("🔧 Using stable v1 tools implementation")
+        ssh_server = SSHMCPServer(server_name)
+        Logger.info("SSH MCP Server (v2) instance created", {"version": "v2"})
+        print("🚀 Using unified v2 tools implementation")
 
         # Initialize server with SSH configurations
         print("🔌 Initializing SSH connections...")
