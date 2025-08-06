@@ -20,9 +20,8 @@ import asyncio
 import sys
 from typing import NoReturn
 
-from . import __version__
+from . import SSHMCPServer, __version__
 from .cli import app as cli_app
-from .tools.server import OptimizedSSHMCPServer as SSHMCPServer
 from .utils import Logger, setup_logger
 
 

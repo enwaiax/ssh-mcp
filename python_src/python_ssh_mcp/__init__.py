@@ -20,6 +20,12 @@ Features:
 - Multi-server connection management
 - FastMCP integration for seamless AI tool integration
 - Full compatibility with TypeScript version API
+
+Quick Start:
+    from python_ssh_mcp import SSHMCPServer
+    server = SSHMCPServer()
+    await server.initialize(ssh_configs)
+    await server.run()
 """
 
 __version__ = "0.1.0"
@@ -27,16 +33,19 @@ __author__ = "AI Assistant"
 __email__ = "ai@example.com"
 
 # Core modules for public API
-from . import cli, models, server, ssh_manager, tools
+from . import cli, models, ssh_manager, tools
+
+# Import main server class for easy access
+from .tools.server import OptimizedSSHMCPServer as SSHMCPServer
 
 __all__ = [
     "__version__",
     "__author__",
     "__email__",
     "models",
-    "server",
     "ssh_manager",
     "cli",
     "tools",
+    "SSHMCPServer",
 ]
 # {{END_MODIFICATIONS}}

@@ -25,9 +25,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from fastmcp import Client
 
+from python_src.python_ssh_mcp import SSHMCPServer
 from python_src.python_ssh_mcp.models import SSHConfig
-from python_src.python_ssh_mcp.server import SSHMCPServer
-from python_src.python_ssh_mcp.tools.server import OptimizedSSHMCPServer
 
 
 class PerformanceBenchmark:
@@ -55,7 +54,7 @@ class PerformanceBenchmark:
     async def setup_servers(self):
         """Setup both v1 and v2 servers with mocked SSH."""
         v1_server = SSHMCPServer("benchmark-v1")
-        v2_server = OptimizedSSHMCPServer("benchmark-v2", use_v2_tools=True)
+        v2_server = SSHMCPServer("benchmark-v2")
 
         # Mock SSH manager to avoid real connections
         with patch(

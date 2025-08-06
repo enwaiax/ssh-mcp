@@ -22,9 +22,8 @@ from unittest.mock import AsyncMock, patch
 import pytest
 from fastmcp import Client
 
+from python_src.python_ssh_mcp import SSHMCPServer  # Unified server implementation
 from python_src.python_ssh_mcp.models import MCPResponse, SSHConfig
-from python_src.python_ssh_mcp.server import SSHMCPServer  # v1 server
-from python_src.python_ssh_mcp.tools.server import OptimizedSSHMCPServer  # v2 server
 
 
 class TestToolsComparison:
@@ -106,7 +105,7 @@ class TestToolsComparison:
     @pytest.fixture
     async def v2_server(self, ssh_configs):
         """Create and initialize v2 server instance."""
-        server = OptimizedSSHMCPServer("test-v2-server", use_v2_tools=True)
+        server = SSHMCPServer("test-v2-server")
 
         # Mock SSH manager to avoid real connections
         with patch(

@@ -10,7 +10,7 @@
 """
 SSH MCP Tools Module
 
-This module provides the unified v2 implementation of SSH MCP tools using
+This module provides the unified implementation of SSH MCP tools using
 FastMCP best practices including:
 - Direct decorator pattern with automatic registration
 - Context dependency injection for logging and progress reporting
@@ -23,12 +23,13 @@ Available tools:
 - download: Download files via SFTP with progress tracking
 - list-servers: List SSH server configurations with status
 
-The v2 implementation is now the unified standard, providing enhanced
-features while maintaining 100% API compatibility.
+This implementation provides enhanced features while maintaining
+100% API compatibility with previous versions.
 """
 
 # Import tools implementation
+from .server import OptimizedSSHMCPServer
 from .ssh_tools import initialize_server, mcp
 
-__all__ = ["mcp", "initialize_server"]
+__all__ = ["mcp", "initialize_server", "OptimizedSSHMCPServer"]
 # {{END_MODIFICATIONS}}
