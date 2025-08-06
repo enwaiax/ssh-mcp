@@ -24,7 +24,7 @@ from fastmcp import Client
 
 from python_src.python_ssh_mcp.models import MCPResponse, SSHConfig
 from python_src.python_ssh_mcp.server import SSHMCPServer  # v1 server
-from python_src.python_ssh_mcp.tools.v2.server import OptimizedSSHMCPServer  # v2 server
+from python_src.python_ssh_mcp.tools.server import OptimizedSSHMCPServer  # v2 server
 
 
 class TestToolsComparison:
@@ -144,11 +144,11 @@ class TestToolsComparison:
 
             # Mock the global SSH manager for v2 tools
             with patch(
-                "python_src.python_ssh_mcp.tools.v2.ssh_tools._ssh_manager",
+                "python_src.python_ssh_mcp.tools.ssh_tools._ssh_manager",
                 mock_manager,
             ):
                 # Set the SSH manager manually to ensure tools work
-                from python_src.python_ssh_mcp.tools.v2.ssh_tools import set_ssh_manager
+                from python_src.python_ssh_mcp.tools.ssh_tools import set_ssh_manager
 
                 set_ssh_manager(mock_manager)
 

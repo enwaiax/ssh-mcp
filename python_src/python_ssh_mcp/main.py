@@ -22,7 +22,7 @@ from typing import NoReturn
 
 from . import __version__
 from .cli import app as cli_app
-from .tools.v2.server import OptimizedSSHMCPServer as SSHMCPServer
+from .tools.server import OptimizedSSHMCPServer as SSHMCPServer
 from .utils import Logger, setup_logger
 
 

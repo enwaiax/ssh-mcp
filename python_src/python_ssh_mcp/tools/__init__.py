@@ -27,8 +27,8 @@ The v2 implementation is now the unified standard, providing enhanced
 features while maintaining 100% API compatibility.
 """
 
-# Import v2 tools implementation
-from .v2 import initialize_server, mcp
+# Import tools implementation
+from .ssh_tools import initialize_server, mcp
 
 __all__ = ["mcp", "initialize_server"]
 # {{END_MODIFICATIONS}}

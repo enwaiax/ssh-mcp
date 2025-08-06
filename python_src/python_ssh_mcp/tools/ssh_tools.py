@@ -23,8 +23,8 @@ Version: 2.0.0
 from fastmcp import Context, FastMCP
 from mcp.types import ToolAnnotations
 
-from ...ssh_manager import SSHConnectionManager
-from ...utils.error_handling import (
+from ..ssh_manager import SSHConnectionManager
+from ..utils.error_handling import (
     MCPToolError,
     SFTPError,
     SSHConnectionError,

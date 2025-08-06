@@ -27,7 +27,7 @@ from fastmcp import Client
 
 from python_src.python_ssh_mcp.models import SSHConfig
 from python_src.python_ssh_mcp.server import SSHMCPServer
-from python_src.python_ssh_mcp.tools.v2.server import OptimizedSSHMCPServer
+from python_src.python_ssh_mcp.tools.server import OptimizedSSHMCPServer
 
 
 class PerformanceBenchmark:

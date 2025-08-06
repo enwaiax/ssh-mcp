@@ -19,9 +19,9 @@ Version: 2.0.0
 
 from fastmcp import FastMCP
 
-from ...models import SshConnectionConfigMap
-from ...ssh_manager import SSHConnectionManager
-from ...utils import Logger
+from ..models import SshConnectionConfigMap
+from ..ssh_manager import SSHConnectionManager
+from ..utils import Logger
 from .ssh_tools import initialize_server as init_v2_server
 from .ssh_tools import mcp as v2_mcp
 
